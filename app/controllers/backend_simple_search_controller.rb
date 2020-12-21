@@ -4,8 +4,17 @@ class BackendSimpleSearchController < ApplicationController
 
     @query_string = params[:q].downcase
     @results = @results.select do |r|
-      r['title'].downcase.include?(@query_string) ||
-        r['cast']&.downcase&.include?(@query_string)
+      match_by_word(r['title'].downcase, @query_string) ||
+        match_by_word(r['cast']&.downcase, @query_string)
     end
+  end
+
+  private
+
+  def match_by_word(test_string, query_string)
+    return true unless query_string
+    return false unless test_string
+
+    query_string.split(' ').any? { |word| test_string.include?(word) }
   end
 end
