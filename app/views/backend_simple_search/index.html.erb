@@ -1,0 +1,10 @@
+<h1>Simple Backend Search</h1>
+<%= form_with do |f| %>
+  <%= f.text_field :q, placeholder: 'search' %>
+  <%= f.submit :search %>
+<% end %>
+
+<h2>Results</h2>
+<% @results.each do |result| %>
+  <pre><%= result.inspect %></pre>
+<% end %>
