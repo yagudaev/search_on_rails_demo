@@ -2,7 +2,7 @@ class BackendSimpleSearchController < ApplicationController
   def index
     @results = CSV.read('db/netflix_titles.csv', headers: true)
 
-    @query_string = params[:q].downcase
+    @query_string = remove_stop_words(params[:q].downcase)
     @results = @results.select do |r|
       match_by_word(r['title'].downcase, @query_string) ||
         match_by_word(r['cast']&.downcase, @query_string)
@@ -16,5 +16,9 @@ class BackendSimpleSearchController < ApplicationController
     return false unless test_string
 
     query_string.split(' ').any? { |word| test_string.include?(word) }
+  end
+
+  def remove_stop_words(str)
+    str.gsub(/\bthe|a|an|of\b/, '')
   end
 end
