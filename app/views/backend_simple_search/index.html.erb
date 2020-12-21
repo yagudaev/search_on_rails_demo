@@ -7,5 +7,5 @@
 <h2>Results</h2>
 <p>Searched for "<%= params[:q] %>" and got <%= @results.count %> records</p>
 <% @results.each do |result| %>
-  <pre><%= result.inspect %></pre>
+  <pre class="search-result"><%=  result.as_json.inspect.html_safe %></pre>
 <% end %>
