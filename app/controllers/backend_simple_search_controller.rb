@@ -2,6 +2,7 @@ class BackendSimpleSearchController < ApplicationController
   def index
     @results = CSV.read('db/netflix_titles.csv', headers: true)
 
+    # TODO: extract into search with rspec tests
     @query_string = remove_stop_words(params[:q].downcase)
     @results = @results.select do |r|
       match_by_word(r['title'].downcase, @query_string) ||
@@ -32,28 +33,45 @@ class BackendSimpleSearchController < ApplicationController
 
   def add_highlights(results)
     results.each do |result|
-      result['title'] = add_highlight(result['title'].downcase)
-      result['cast'] = add_highlight(result['cast'].downcase) if result['cast']
+      result['title'] = add_highlight(result['title'].downcase, result, weight: 2)
+      result['cast'] = add_highlight(result['cast'].downcase, result, weight: 1) if result['cast']
     end
   end
 
-  def add_highlight(str)
+  def add_highlight(str, result, weight:)
     words = @query_string.split(' ')
 
-    words.reduce(str) do |accumulator, word|
+    score = 10**weight
+
+    # matches
+    highligthed_str = words.reduce(str) do |accumulator, word|
       start_pos = accumulator.index(word)
 
       next str unless start_pos
 
-      end_pos = start_pos + word.length
-
       opening_tag = '<b>'
       closing_tag = '</b>'
       new_str = accumulator.insert(start_pos, opening_tag)
-      new_str = new_str.insert(end_pos + opening_tag.length, closing_tag)
+
+      end_pos = start_pos + opening_tag.length + word.length
+      new_str = new_str.insert(end_pos , closing_tag)
+
+      # scoring
+      if (end_pos + closing_tag.length > new_str.length || new_str[end_pos + closing_tag.length].match(/[\s|:]/)) && new_str[start_pos - 1].match(/[\s|:]/) # full word
+        score += 5
+      else # partial word
+        score += 2
+      end
+
+      score += 3 if start_pos == 0
+      score += 2 if start_pos > 0 && end_pos + word.length < str.length
+      score += 1 if end_pos + word.length == str.length
 
       new_str
     end
+
+    result['_score'] = score
+    highligthed_str
   end
 
   def add_score(results)
