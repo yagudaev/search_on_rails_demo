@@ -1,10 +1,11 @@
 <h1>Simple Backend Search</h1>
-<%= form_with do |f| %>
-  <%= f.text_field :q, placeholder: 'search' %>
+<%= form_with method: :get do |f| %>
+  <%= f.text_field :q, placeholder: 'search', value: params[:q] %>
   <%= f.submit :search %>
 <% end %>
 
 <h2>Results</h2>
+<p>Searched for "<%= params[:q] %>" and got <%= @results.count %> records</p>
 <% @results.each do |result| %>
   <pre><%= result.inspect %></pre>
 <% end %>
