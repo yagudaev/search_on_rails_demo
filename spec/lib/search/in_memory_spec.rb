@@ -11,15 +11,21 @@ RSpec.describe Search::InMemory do
     end
 
     context 'when the collection has one item' do
-      let(:collection) { [{ title: 'Die Hard', description: 'Great movie' }] }
+      let(:record) { { title: 'Die Hard', description: 'Great movie' } }
+      let(:collection) { [record] }
+
       context 'and searching using an emtpy string' do
         it { is_expected.to match_array(collection) }
       end
 
       context 'and there is a match' do
+        let(:query) { 'Die' }
+        it { is_expected.to match_array([record]) }
       end
 
       context 'and there is no match' do
+        let(:query) { 'Titanic' }
+        it { is_expected.to match_array([]) }
       end
     end
 
