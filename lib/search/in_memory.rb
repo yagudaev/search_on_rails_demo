@@ -9,11 +9,6 @@ module Search
           match_by_word(r['cast']&.downcase, @query_string)
       end
 
-      @results = @results.select do |r|
-        match_by_word(r['title'].downcase, @query_string) ||
-          match_by_word(r['cast']&.downcase, @query_string)
-      end
-
       # @results = add_highlights(@results)
       # @results = add_score(@results)
     end

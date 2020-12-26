@@ -48,6 +48,25 @@ RSpec.describe Search::InMemory do
           it { is_expected.to match_array([]) }
         end
       end
+
+      context 'and multiple fields including no-searchable ones' do
+        let(:record) { { title: 'Die Hard', cast: 'Bruce Willis', description: 'Great movie' } }
+        let(:collection) { [record] }
+
+        context 'and searching using an emtpy string' do
+          it { is_expected.to match_array(collection) }
+        end
+
+        context 'and there is a match' do
+          let(:query) { 'Bruce' }
+          it { is_expected.to match_array([record]) }
+        end
+
+        context 'and there is no match' do
+          let(:query) { 'Great' }
+          it { is_expected.to match_array([]) }
+        end
+      end
     end
 
     context 'when the collection has many items' do
