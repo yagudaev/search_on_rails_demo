@@ -11,21 +11,42 @@ RSpec.describe Search::InMemory do
     end
 
     context 'when the collection has one item' do
-      let(:record) { { title: 'Die Hard' } }
-      let(:collection) { [record] }
+      context 'and a single field' do
+        let(:record) { { title: 'Die Hard' } }
+        let(:collection) { [record] }
 
-      context 'and searching using an emtpy string' do
-        it { is_expected.to match_array(collection) }
+        context 'and searching using an emtpy string' do
+          it { is_expected.to match_array(collection) }
+        end
+
+        context 'and there is a match' do
+          let(:query) { 'Die' }
+          it { is_expected.to match_array([record]) }
+        end
+
+        context 'and there is no match' do
+          let(:query) { 'Titanic' }
+          it { is_expected.to match_array([]) }
+        end
       end
 
-      context 'and there is a match' do
-        let(:query) { 'Die' }
-        it { is_expected.to match_array([record]) }
-      end
+      context 'and multiple fields' do
+        let(:record) { { title: 'Die Hard', cast: 'Bruce Willis' } }
+        let(:collection) { [record] }
 
-      context 'and there is no match' do
-        let(:query) { 'Titanic' }
-        it { is_expected.to match_array([]) }
+        context 'and searching using an emtpy string' do
+          it { is_expected.to match_array(collection) }
+        end
+
+        context 'and there is a match' do
+          let(:query) { 'Bruce' }
+          it { is_expected.to match_array([record]) }
+        end
+
+        context 'and there is no match' do
+          let(:query) { 'Smith' }
+          it { is_expected.to match_array([]) }
+        end
       end
     end
 
@@ -34,18 +55,40 @@ RSpec.describe Search::InMemory do
       let(:record_2) { { title: 'Titanic' } }
       let(:collection) { [record_1, record_2] }
 
-      context 'and searching using an emtpy string' do
-        it { is_expected.to match_array(collection) }
+      context 'and a single field' do
+        context 'and searching using an emtpy string' do
+          it { is_expected.to match_array(collection) }
+        end
+
+        context 'and there is a match' do
+          let(:query) { 'Die' }
+          it { is_expected.to match_array([record_1]) }
+        end
+
+        context 'and there is no match' do
+          let(:query) { 'Alien' }
+          it { is_expected.to match_array([]) }
+        end
       end
 
-      context 'and there is a match' do
-        let(:query) { 'Die' }
-        it { is_expected.to match_array([record_1]) }
-      end
+      context 'and multiple fields' do
+        let(:record_1) { { title: 'Die Hard', cast: 'Bruce Willis' } }
+        let(:record_2) { { title: 'Titanic', cast: 'Leonardo Dicaprio' } }
+        let(:collection) { [record_1, record_2] }
 
-      context 'and there is no match' do
-        let(:query) { 'Alien' }
-        it { is_expected.to match_array([]) }
+        context 'and searching using an emtpy string' do
+          it { is_expected.to match_array(collection) }
+        end
+
+        context 'and there is a match' do
+          let(:query) { 'Leonardo' }
+          it { is_expected.to match_array([record_2]) }
+        end
+
+        context 'and there is no match' do
+          let(:query) { 'Demi Moore' }
+          it { is_expected.to match_array([]) }
+        end
       end
     end
   end
