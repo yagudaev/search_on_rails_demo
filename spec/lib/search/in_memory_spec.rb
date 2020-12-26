@@ -11,7 +11,7 @@ RSpec.describe Search::InMemory do
     end
 
     context 'when the collection has one item' do
-      let(:record) { { title: 'Die Hard', description: 'Great movie' } }
+      let(:record) { { title: 'Die Hard' } }
       let(:collection) { [record] }
 
       context 'and searching using an emtpy string' do
@@ -30,8 +30,8 @@ RSpec.describe Search::InMemory do
     end
 
     context 'when the collection has many items' do
-      let(:record_1) { { title: 'Die Hard', description: 'Great movie' } }
-      let(:record_2) { { title: 'Titanic', description: 'Sad movie' } }
+      let(:record_1) { { title: 'Die Hard' } }
+      let(:record_2) { { title: 'Titanic' } }
       let(:collection) { [record_1, record_2] }
 
       context 'and searching using an emtpy string' do
