@@ -2,7 +2,9 @@ module Search
   class InMemory
     def self.search(records, query)
       @query_string = remove_stop_words(query&.downcase)
-      @results = records.select do |r|
+      @results = records.map(&:with_indifferent_access)
+
+      @results = @results.select do |r|
         match_by_word(r['title'].downcase, @query_string) ||
           match_by_word(r['cast']&.downcase, @query_string)
       end
@@ -12,8 +14,8 @@ module Search
           match_by_word(r['cast']&.downcase, @query_string)
       end
 
-      @results = add_highlights(@results)
-      @results = add_score(@results)
+      # @results = add_highlights(@results)
+      # @results = add_score(@results)
     end
 
     private
