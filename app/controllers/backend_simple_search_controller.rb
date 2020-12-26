@@ -3,7 +3,9 @@ class BackendSimpleSearchController < ApplicationController
     @results = CSV.read('db/netflix_titles.csv', headers: true)
 
     # TODO: extract into search with rspec tests
-    @query_string = remove_stop_words(params[:q].downcase)
+    return unless params[:q]
+
+    @query_string = remove_stop_words(params[:q]&.downcase)
     @results = @results.select do |r|
       match_by_word(r['title'].downcase, @query_string) ||
         match_by_word(r['cast']&.downcase, @query_string)
