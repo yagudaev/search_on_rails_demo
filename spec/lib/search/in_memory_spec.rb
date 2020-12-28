@@ -4,7 +4,8 @@ RSpec.describe Search::InMemory do
   describe '.search' do
     let(:collection) { [] }
     let(:query) { '' }
-    subject { described_class.search(collection, query) }
+    let(:instance) { described_class.new }
+    subject { instance.search(collection, query) }
 
     context 'when given an empty collection' do
       it { is_expected.to match_array([]) }
@@ -52,6 +53,7 @@ RSpec.describe Search::InMemory do
       context 'and multiple fields including no-searchable ones' do
         let(:record) { { title: 'Die Hard', cast: 'Bruce Willis', description: 'Great movie' } }
         let(:collection) { [record] }
+        let(:instance) { described_class.new(fields: [:title, :cast]) }
 
         context 'and searching using an emtpy string' do
           it { is_expected.to match_array(collection) }

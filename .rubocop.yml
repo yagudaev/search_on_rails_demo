@@ -1,2 +1,5 @@
 Naming/VariableNumber:
   Enabled: false
+
+Style/SymbolArray:
+  Enabled: false

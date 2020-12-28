@@ -1,12 +1,15 @@
 module Search
   class InMemory
-    def self.search(records, query)
-      @query_string = remove_stop_words(query&.downcase)
-      @results = records.map(&:with_indifferent_access)
+    def initialize(fields: nil)
+      @fields = fields
+    end
 
-      @results = @results.select do |r|
-        match_by_word(r['title'].downcase, @query_string) ||
-          match_by_word(r['cast']&.downcase, @query_string)
+    def search(records, query)
+      query_string = remove_stop_words(query&.downcase)
+      results = records.map(&:with_indifferent_access)
+
+      results = results.select do |r|
+        r.keys.any? { |key| match_by_word(r[key]&.downcase, query_string) }
       end
 
       # @results = add_highlights(@results)
@@ -15,14 +18,14 @@ module Search
 
     private
 
-    def self.match_by_word(test_string, query_string)
+    def match_by_word(test_string, query_string)
       return true unless query_string.present?
       return false unless test_string.present?
 
       query_string.split(' ').any? { |word| test_string.include?(word) }
     end
 
-    def self.remove_stop_words(str)
+    def remove_stop_words(str)
       str.gsub(/\b(the|a|an|of|to)\b/, '')
     end
 

@@ -6,6 +6,6 @@ class Title
   end
 
   def self.search(query)
-    Search::InMemory.search(@records, query)
+    Search::InMemory.new.search(@records, query)
   end
 end
