@@ -1,11 +1,15 @@
 module Search
   class InMemory
     module Highlighter
-      def highlight(records, query_string, searchable_fields)
-        # results.each do |result|
+      def highlight(records, query_string, searchable_fields = nil)
+        records.each do |record|
+          keys = searchable_fields || record.keys
+          keys.each do |key|
+          end
+
         #   result['title'] = add_highlight(result['title'].downcase, result, weight: 2)
         #   result['cast'] = add_highlight(result['cast'].downcase, result, weight: 1) if result['cast']
-        # end
+        end
       end
 
       private

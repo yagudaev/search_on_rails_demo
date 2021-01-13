@@ -1,5 +1,5 @@
 RSpec.shared_examples Search::InMemory::Highlighter do
-  subject { instance.search(collection, query) }
+  subject { instance.highlight(collection, query) }
 
   let(:collection) { [] }
   let(:query) { '' }
@@ -10,26 +10,28 @@ RSpec.shared_examples Search::InMemory::Highlighter do
   end
 
   context 'when the collection has one or more items' do
-    # context 'with a single field' do
-    #   let(:record) { { title: 'Die Hard' } }
-    #   let(:collection) { [record] }
+    subject { super().first[:title] }
 
-    #   context 'and searching using an emtpy string' do
-    #     it { is_expected.to match_array(collection) }
-    #   end
+    context 'with a single field' do
+      let(:record) { { title: 'Die Hard' } }
+      let(:collection) { [record] }
 
-    #   context 'and there is a match' do
-    #     let(:query) { 'Die' }
+      context 'and searching using an empty string' do
+        it('has no highlights') { is_expected.to eq('Die Hard') }
+      end
 
-    #     it { is_expected.to match_array([record]) }
-    #   end
+      context 'and there is a match' do
+        let(:query) { 'Die' }
 
-    #   context 'and there is no match' do
-    #     let(:query) { 'Titanic' }
+        it { is_expected.to eq('<b>Die</b>') }
+      end
 
-    #     it { is_expected.to match_array([]) }
-    #   end
-    # end
+      context 'and there is no match' do
+        let(:query) { 'Titanic' }
+
+        it { is_expected.to eq('Die Hard') }
+      end
+    end
 
     # context 'with multiple fields' do
     #   let(:record) { { title: 'Die Hard', cast: 'Bruce Willis' } }

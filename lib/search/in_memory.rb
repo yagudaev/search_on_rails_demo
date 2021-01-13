@@ -1,6 +1,7 @@
 module Search
   class InMemory
     include Matcher
+    include Highlighter
 
     def initialize(searchable_fields: nil)
       @searchable_fields = searchable_fields

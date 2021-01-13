@@ -1,7 +1,7 @@
 module Search
   class InMemory
     module Matcher
-      def match(records, query_string, searchable_fields)
+      def match(records, query_string, searchable_fields = nil)
         records.select do |r|
           keys = searchable_fields || r.keys
           keys.any? { |key| match_by_word(r[key]&.downcase, query_string) }
