@@ -15,7 +15,10 @@ require 'action_cable/engine'
 require 'sprockets/railtie'
 # require "rails/test_unit/railtie"
 require 'csv'
+
+# TODO: find cleaner way to do this
 require './lib/search/in_memory/matcher'
+require './lib/search/in_memory/highlighter'
 require './lib/search/in_memory'
 
 # Require the gems listed in Gemfile, including any gems

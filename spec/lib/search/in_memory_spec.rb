@@ -1,8 +1,10 @@
 require 'rails_helper'
 require 'lib/search/in_memory/shared_examples/matching'
+require 'lib/search/in_memory/shared_examples/highlighter'
 
 RSpec.describe Search::InMemory do
-  it_behaves_like 'matcher'
+  it_behaves_like Search::InMemory::Matcher
+  it_behaves_like Search::InMemory::Highlighter
 
   # combines all
   # describe '.search' do

@@ -1,4 +1,4 @@
-RSpec.shared_examples 'matcher' do
+RSpec.shared_examples Search::InMemory::Matcher do
   subject { instance.search(collection, query) }
 
   let(:collection) { [] }
@@ -31,7 +31,7 @@ RSpec.shared_examples 'matcher' do
       end
     end
 
-    context 'and multiple fields' do
+    context 'with multiple fields' do
       let(:record) { { title: 'Die Hard', cast: 'Bruce Willis' } }
       let(:collection) { [record] }
 
@@ -53,7 +53,7 @@ RSpec.shared_examples 'matcher' do
     end
 
     # this is a searchable fields feature, maybe structure the tests a little different?
-    context 'and multiple fields including none-searchable ones' do
+    context 'with multiple fields including none-searchable ones' do
       let(:record) { { title: 'Die Hard', cast: 'Bruce Willis', description: 'Great movie' } }
       let(:collection) { [record] }
       let(:instance) { described_class.new(searchable_fields: %i[title cast]) }
