@@ -19,10 +19,10 @@ module Search
     private
 
     def match_by_word(test_string, query_string)
-      return true unless query_string.present?
-      return false unless test_string.present?
+      return true if query_string.blank?
+      return false if test_string.blank?
 
-      query_string.split(' ').any? { |word| test_string.include?(word) }
+      query_string.split.any? { |word| test_string.include?(word) }
     end
 
     def remove_stop_words(str)
@@ -37,7 +37,7 @@ module Search
     end
 
     def self.add_highlight(str, result, weight:)
-      words = @query_string.split(' ')
+      words = @query_string.split
 
       score = 10**weight
 
