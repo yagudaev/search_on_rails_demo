@@ -1,5 +1,27 @@
+AllCops:
+  TargetRubyVersion: 3.0
+  NewCops: enable
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
 Naming/VariableNumber:
   Enabled: false
 
-Style/SymbolArray:
+RSpec/LetSetup:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - 'spec/**/*.rb'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/NestedGroups:
   Enabled: false
