@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'lib/search/in_memory/shared_examples/matching'
+require 'lib/search/in_memory/shared_examples/matcher'
 require 'lib/search/in_memory/shared_examples/highlighter'
 
 RSpec.describe Search::InMemory do
