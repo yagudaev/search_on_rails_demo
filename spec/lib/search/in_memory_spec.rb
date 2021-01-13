@@ -2,10 +2,11 @@ require 'rails_helper'
 
 RSpec.describe Search::InMemory do
   describe '.search' do
+    subject { instance.search(collection, query) }
+
     let(:collection) { [] }
     let(:query) { '' }
     let(:instance) { described_class.new }
-    subject { instance.search(collection, query) }
 
     context 'when given an empty collection' do
       it { is_expected.to match_array([]) }
@@ -22,11 +23,13 @@ RSpec.describe Search::InMemory do
 
         context 'and there is a match' do
           let(:query) { 'Die' }
+
           it { is_expected.to match_array([record]) }
         end
 
         context 'and there is no match' do
           let(:query) { 'Titanic' }
+
           it { is_expected.to match_array([]) }
         end
       end
@@ -41,11 +44,13 @@ RSpec.describe Search::InMemory do
 
         context 'and there is a match' do
           let(:query) { 'Bruce' }
+
           it { is_expected.to match_array([record]) }
         end
 
         context 'and there is no match' do
           let(:query) { 'Smith' }
+
           it { is_expected.to match_array([]) }
         end
       end
@@ -53,7 +58,7 @@ RSpec.describe Search::InMemory do
       context 'and multiple fields including no-searchable ones' do
         let(:record) { { title: 'Die Hard', cast: 'Bruce Willis', description: 'Great movie' } }
         let(:collection) { [record] }
-        let(:instance) { described_class.new(fields: [:title, :cast]) }
+        let(:instance) { described_class.new(fields: %i[title cast]) }
 
         context 'and searching using an emtpy string' do
           it { is_expected.to match_array(collection) }
@@ -61,11 +66,13 @@ RSpec.describe Search::InMemory do
 
         context 'and there is a match' do
           let(:query) { 'Bruce' }
+
           it { is_expected.to match_array([record]) }
         end
 
         context 'and there is no match' do
           let(:query) { 'Great' }
+
           it { is_expected.to match_array([]) }
         end
       end
@@ -83,11 +90,13 @@ RSpec.describe Search::InMemory do
 
         context 'and there is a match' do
           let(:query) { 'Die' }
+
           it { is_expected.to match_array([record_1]) }
         end
 
         context 'and there is no match' do
           let(:query) { 'Alien' }
+
           it { is_expected.to match_array([]) }
         end
       end
@@ -103,11 +112,13 @@ RSpec.describe Search::InMemory do
 
         context 'and there is a match' do
           let(:query) { 'Leonardo' }
+
           it { is_expected.to match_array([record_2]) }
         end
 
         context 'and there is no match' do
           let(:query) { 'Demi Moore' }
+
           it { is_expected.to match_array([]) }
         end
       end
