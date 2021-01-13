@@ -23,7 +23,7 @@ RSpec.shared_examples Search::InMemory::Highlighter do
       context 'and there is a match' do
         let(:query) { 'Die' }
 
-        it { is_expected.to eq('<b>Die</b>') }
+        it { is_expected.to eq('<b>Die</b> Hard') }
       end
 
       context 'and there is no match' do
