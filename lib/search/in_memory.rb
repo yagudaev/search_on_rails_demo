@@ -1,5 +1,7 @@
 module Search
   class InMemory
+    include Matcher
+
     def initialize(searchable_fields: nil)
       @searchable_fields = searchable_fields
     end
@@ -8,23 +10,13 @@ module Search
       query_string = remove_stop_words(query&.downcase)
       results = records.map(&:with_indifferent_access)
 
-      results = results.select do |r|
-        keys = @searchable_fields || r.keys
-        keys.any? { |key| match_by_word(r[key]&.downcase, query_string) }
-      end
+      results = match(results, query_string, @searchable_fields)
 
       # @results = add_highlights(@results)
       # @results = add_score(@results)
     end
 
     private
-
-    def match_by_word(test_string, query_string)
-      return true if query_string.blank?
-      return false if test_string.blank?
-
-      query_string.split.any? { |word| test_string.include?(word) }
-    end
 
     def remove_stop_words(str)
       str.gsub(/\b(the|a|an|of|to)\b/, '')
