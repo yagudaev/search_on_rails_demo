@@ -10,9 +10,9 @@ RSpec.shared_examples Search::InMemory::Highlighter do
   end
 
   context 'when the collection has one or more items' do
-    subject { super().first[:title] }
-
     context 'with a single field' do
+      subject { super().first[:title] }
+
       let(:record) { { title: 'Die Hard' } }
       let(:collection) { [record] }
 
@@ -33,48 +33,32 @@ RSpec.shared_examples Search::InMemory::Highlighter do
       end
     end
 
-    # context 'with multiple fields' do
-    #   let(:record) { { title: 'Die Hard', cast: 'Bruce Willis' } }
-    #   let(:collection) { [record] }
+    context 'with multiple fields' do
+      let(:record) { { title: 'Die Hard', cast: 'Bruce Willis' } }
+      let(:collection) { [record] }
 
-    #   context 'and searching using an emtpy string' do
-    #     it { is_expected.to match_array(collection) }
-    #   end
+      context 'and searching using an emtpy string' do
+        subject { super().first }
 
-    #   context 'and there is a match' do
-    #     let(:query) { 'Bruce' }
+        it { expect(subject[:title]).to eq('Die Hard') }
+        it { expect(subject[:cast]).to eq('Bruce Willis') }
+      end
 
-    #     it { is_expected.to match_array([record]) }
-    #   end
+      context 'and there is a match' do
+        subject { super().first[:cast] }
 
-    #   context 'and there is no match' do
-    #     let(:query) { 'Smith' }
+        let(:query) { 'Bruce' }
 
-    #     it { is_expected.to match_array([]) }
-    #   end
-    # end
+        it { is_expected.to eq('<b>Bruce</b> Willis') }
+      end
 
-    # this is a searchable fields feature, maybe structure the tests a little different?
-    # context 'and multiple fields including none-searchable ones' do
-    #   let(:record) { { title: 'Die Hard', cast: 'Bruce Willis', description: 'Great movie' } }
-    #   let(:collection) { [record] }
-    #   let(:instance) { described_class.new(searchable_fields: %i[title cast]) }
+      context 'and there is no match' do
+        subject { super().first[:cast] }
 
-    #   context 'and searching using an emtpy string' do
-    #     it { is_expected.to match_array(collection) }
-    #   end
+        let(:query) { 'Smith' }
 
-    #   context 'and there is a match' do
-    #     let(:query) { 'Bruce' }
-
-    #     it { is_expected.to match_array([record]) }
-    #   end
-
-    #   context 'and there is no match' do
-    #     let(:query) { 'Great' }
-
-    #     it { is_expected.to match_array([]) }
-    #   end
-    # end
+        it { is_expected.to eq('Bruce Willis') }
+      end
+    end
   end
 end
