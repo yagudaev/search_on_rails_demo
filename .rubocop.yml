@@ -25,3 +25,10 @@ RSpec/ContextWording:
 
 RSpec/NestedGroups:
   Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
