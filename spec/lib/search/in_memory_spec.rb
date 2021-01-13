@@ -13,7 +13,7 @@ RSpec.describe Search::InMemory do
     end
 
     context 'when the collection has one item' do
-      context 'and a single field' do
+      context 'with a single field' do
         let(:record) { { title: 'Die Hard' } }
         let(:collection) { [record] }
 
@@ -55,10 +55,11 @@ RSpec.describe Search::InMemory do
         end
       end
 
-      context 'and multiple fields including no-searchable ones' do
+      # this is a searchable fields feature, maybe structure the tests a little different?
+      context 'and multiple fields including none-searchable ones' do
         let(:record) { { title: 'Die Hard', cast: 'Bruce Willis', description: 'Great movie' } }
         let(:collection) { [record] }
-        let(:instance) { described_class.new(fields: %i[title cast]) }
+        let(:instance) { described_class.new(searchable_fields: %i[title cast]) }
 
         context 'and searching using an emtpy string' do
           it { is_expected.to match_array(collection) }

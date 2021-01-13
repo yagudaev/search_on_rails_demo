@@ -1,7 +1,7 @@
 module Search
   class InMemory
-    def initialize(fields: nil)
-      @fields = fields
+    def initialize(searchable_fields: nil)
+      @searchable_fields = searchable_fields
     end
 
     def search(records, query)
@@ -9,7 +9,8 @@ module Search
       results = records.map(&:with_indifferent_access)
 
       results = results.select do |r|
-        r.keys.any? { |key| match_by_word(r[key]&.downcase, query_string) }
+        keys = @searchable_fields || r.keys
+        keys.any? { |key| match_by_word(r[key]&.downcase, query_string) }
       end
 
       # @results = add_highlights(@results)
