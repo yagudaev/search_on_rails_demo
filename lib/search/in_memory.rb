@@ -4,12 +4,11 @@ module Search
     include Highlighter
 
     def search(records, query)
-      query_string = remove_stop_words(query&.downcase)
+      query_string = remove_stop_words(query)
       results = records.map(&:with_indifferent_access)
 
       results = match(results, query_string)
       results = highlight(results, query_string)
-      # @results = add_score(@results)
 
       results
     end
@@ -19,8 +18,6 @@ module Search
     def remove_stop_words(str)
       str.gsub(/\b(the|a|an|of|to)\b/, '')
     end
-
-
 
     def self.add_score(results)
       # highest if found in title > cast | 10^2 (100), 10^1 (10)

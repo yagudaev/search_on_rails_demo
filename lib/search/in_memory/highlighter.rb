@@ -1,10 +1,9 @@
 module Search
   class InMemory
     module Highlighter
-      def highlight(records, query_string, searchable_fields = nil)
+      def highlight(records, query_string)
         records.each do |record|
-          keys = searchable_fields || record.keys
-          keys.each do |key|
+          record.each_key do |key|
             record[key] = with_highlights(text: record[key], query_string: query_string)
           end
         end
@@ -13,6 +12,8 @@ module Search
       private
 
       def with_highlights(text:, query_string:)
+        return text if text.blank?
+
         start_pos = text.index(query_string)
 
         return text if query_string.blank?

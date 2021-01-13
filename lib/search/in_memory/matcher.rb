@@ -4,7 +4,7 @@ module Search
       def match(records, query_string, searchable_fields = nil)
         records.select do |r|
           keys = searchable_fields || r.keys
-          keys.any? { |key| match_by_word(r[key]&.downcase, query_string) }
+          keys.any? { |key| match_by_word(r[key], query_string) }
         end
       end
 

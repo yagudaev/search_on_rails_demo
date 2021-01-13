@@ -16,7 +16,7 @@ require 'sprockets/railtie'
 # require "rails/test_unit/railtie"
 require 'csv'
 
-# TODO: find cleaner way to do this
+# TODO: find cleaner way to do this, this also doesn't autoreload
 require './lib/search/in_memory/matcher'
 require './lib/search/in_memory/highlighter'
 require './lib/search/in_memory'
