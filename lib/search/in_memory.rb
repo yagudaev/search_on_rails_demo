@@ -3,18 +3,15 @@ module Search
     include Matcher
     include Highlighter
 
-    def initialize(searchable_fields: nil)
-      @searchable_fields = searchable_fields
-    end
-
     def search(records, query)
       query_string = remove_stop_words(query&.downcase)
       results = records.map(&:with_indifferent_access)
 
-      results = match(results, query_string, @searchable_fields)
-
-      # @results = add_highlights(@results)
+      results = match(results, query_string)
+      results = highlight(results, query_string)
       # @results = add_score(@results)
+
+      results
     end
 
     private

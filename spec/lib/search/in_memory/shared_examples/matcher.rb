@@ -52,29 +52,6 @@ RSpec.shared_examples Search::InMemory::Matcher do
         it { is_expected.to match_array([]) }
       end
     end
-
-    # this is a searchable fields feature, maybe structure the tests a little different?
-    context 'with multiple fields including none-searchable ones' do
-      let(:record) { { title: 'Die Hard', cast: 'Bruce Willis', description: 'Great movie' } }
-      let(:collection) { [record] }
-      let(:instance) { described_class.new(searchable_fields: %i[title cast]) }
-
-      context 'and searching using an emtpy string' do
-        it { is_expected.to match_array(collection) }
-      end
-
-      context 'and there is a match' do
-        let(:query) { 'Bruce' }
-
-        it { is_expected.to match_array([record]) }
-      end
-
-      context 'and there is no match' do
-        let(:query) { 'Great' }
-
-        it { is_expected.to match_array([]) }
-      end
-    end
   end
 
   context 'when the collection has many items' do
