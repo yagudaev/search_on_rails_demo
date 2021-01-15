@@ -1,6 +1,5 @@
 RSpec.shared_examples Search::InMemory::Matcher do
-  # TODO: update to "#match"
-  subject { instance.search(collection, query) }
+  subject { instance.match(collection, query) }
 
   let(:collection) { [] }
   let(:query) { '' }
