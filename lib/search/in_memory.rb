@@ -18,14 +18,5 @@ module Search
     def remove_stop_words(str)
       str.gsub(/\b(the|a|an|of|to)\b/, '')
     end
-
-    def self.add_score(results)
-      # highest if found in title > cast | 10^2 (100), 10^1 (10)
-      # full word > partial word  | 5 & 2
-      # start of text > middle of text > end of text | 3, 2, 1
-      results.each do |result|
-        result['_score'] = 10**2
-      end
-    end
   end
 end
