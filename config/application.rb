@@ -17,8 +17,6 @@ require 'sprockets/railtie'
 require 'csv'
 
 # TODO: find cleaner way to do this, this also doesn't autoreload
-require './lib/search/in_memory/matcher'
-require './lib/search/in_memory/highlighter'
 require './lib/search/in_memory'
 
 # Require the gems listed in Gemfile, including any gems
