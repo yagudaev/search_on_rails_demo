@@ -5,7 +5,11 @@ module Search
     end
 
     def match(records, query_string)
-      records
+      return records if query_string.blank?
+
+      records.select do |record|
+        record.values.any? { |value| value&.match(query_string) }
+      end
     end
   end
 end
