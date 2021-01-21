@@ -16,11 +16,6 @@ require 'sprockets/railtie'
 # require "rails/test_unit/railtie"
 require 'csv'
 
-# TODO: find cleaner way to do this, this also doesn't autoreload
-require './lib/search/in_memory/matcher'
-require './lib/search/in_memory/highlighter'
-require './lib/search/in_memory'
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -37,6 +32,8 @@ module RailsSearchMovies
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.autoload_paths << config.root.join('lib')
 
     # Don't generate system test files.
     config.generators.system_tests = nil
