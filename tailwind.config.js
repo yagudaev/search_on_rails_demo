@@ -1,5 +1,5 @@
 module.exports = {
-    purge: [
+  purge: [
     './app/**/*.html.erb',
     './app/helpers/**/*.rb',
     './src/**/*.html',
@@ -14,7 +14,7 @@ module.exports = {
   variants: {
     extend: {},
   },
-    plugins: [
+  plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
     require('@tailwindcss/aspect-ratio'),
