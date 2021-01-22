@@ -1,5 +1,5 @@
-<div class="px-4">
-  <h1 class="py-4 text-4xl">Simple In-Memory Search</h1>
+<div class="container">
+  <h1 class="">Simple In-Memory Search</h1>
   <%= form_with method: :get do |f| %>
     <%= f.text_field :q, placeholder: 'search', value: params[:q], class: 'rounded-md py-1 border-indigo-200' %>
     <%= f.submit class: 'border border-indigo-500 bg-indigo-500 text-white rounded-md px-4 py-1 m-2 transition duration-200 ease select-none hover:bg-indigo-600 focus:outline-none focus:shadow-outline' do %>
@@ -13,7 +13,7 @@
   <table class="table-auto mt-4 results">
     <thead class="border-b-2">
       <tr class="mt-2 mb-1">
-        <% @results.first.keys.each do |key| %>
+        <% @results.first&.keys&.each do |key| %>
             <th class="px-2 pb-0 text-left font-medium text-gray-900"><%= key.titleize %></th>
         <% end %>
       </tr>

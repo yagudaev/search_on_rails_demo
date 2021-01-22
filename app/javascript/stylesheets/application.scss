@@ -11,5 +11,23 @@
 
 .results tr:hover b {
   @apply bg-indigo-500;
-  @apply text-gray-300;
+  @apply text-indigo-100;
+}
+
+h1 {
+  @apply py-4;
+  @apply text-4xl;
+}
+
+.container {
+  @apply px-4;
+}
+
+a {
+  @apply font-semibold;
+  @apply text-indigo-500;
+
+  &:hover {
+    @apply underline;
+  }
 }
