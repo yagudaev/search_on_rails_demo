@@ -1,3 +1,15 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+.results b {
+  @apply bg-indigo-200;
+  @apply px-1;
+  @apply font-medium;
+
+}
+
+.results tr:hover b {
+  @apply bg-indigo-500;
+  @apply text-gray-300;
+}
