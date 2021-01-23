@@ -21,6 +21,7 @@ h1 {
 
 .container {
   @apply px-4;
+  @apply pb-4;
 }
 
 a {
@@ -45,5 +46,4 @@ table > tbody {
     @apply overflow-ellipsis;
     @apply max-w-xs;
   }
-
 }
