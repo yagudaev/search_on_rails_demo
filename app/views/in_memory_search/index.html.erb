@@ -14,14 +14,14 @@
   <table class="table-auto mt-4 results">
     <thead class="border-b-2">
       <tr class="mt-2 mb-1">
-        <% @results.first&.keys&.each do |key| %>
+        <% @results_page.first&.keys&.each do |key| %>
             <th class="px-2 pb-0 text-left font-medium text-gray-900"><%= key.titleize %></th>
         <% end %>
       </tr>
     </thead>
 
     <tbody>
-      <% @results.each_with_index do |result, i| %>
+      <% @results_page.each_with_index do |result, i| %>
         <tr class="">
           <% result.values.each do |value| %>
             <td class="<%= i == 0 ? 'pt-3' : '' %>"><%= value&.html_safe %></td>
@@ -30,4 +30,11 @@
       <% end %>
     <tbody>
   </table>
+
+  <div class="flex justify-center mt-4">
+    <div class="flex flex-col items-center">
+      <div><%== pagy_nav(@pagy) %></div>
+      <div><%== pagy_info(@pagy) %></div>
+    </div>
+  </div>
 </div>
