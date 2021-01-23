@@ -18,7 +18,9 @@
     <thead class="border-b-2">
       <tr class="mt-2 mb-1">
         <% @results_page.first&.keys&.each do |key| %>
-            <th class="px-2 pb-0 text-left font-medium text-gray-900"><%= key.titleize %></th>
+          <th class="px-2 pb-0 text-left font-medium text-gray-900">
+            <%= render 'shared/table/sortable_header', key: key %>
+          </th>
         <% end %>
       </tr>
     </thead>

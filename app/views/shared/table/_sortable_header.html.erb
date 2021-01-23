@@ -1,0 +1,6 @@
+<%= link_to({ sort: { field: key, direction: key == params.dig(:sort, :field) ? (params.dig(:sort, :direction) == 'asc' ? 'desc' : 'asc') : 'asc'} }) do %>
+  <%= key.titleize %>
+  <% if params.dig(:sort, :field) == key %>
+    <%= render 'shared/table/sort_indicator', direction: params.dig(:sort, :direction) %>
+  <% end %>
+<% end %>
