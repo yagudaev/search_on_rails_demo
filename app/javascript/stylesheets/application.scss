@@ -31,3 +31,19 @@ a {
     @apply underline;
   }
 }
+
+table > tbody {
+  tr:hover {
+    @apply bg-indigo-200;
+    @apply text-gray-900;
+  }
+
+  td {
+    @apply px-2;
+    @apply py-1;
+    @apply truncate;
+    @apply overflow-ellipsis;
+    @apply max-w-xs;
+  }
+
+}
