@@ -5,7 +5,7 @@ class Title
     @records = CSV.read('db/netflix_titles.csv', headers: true).map(&:to_h)
   end
 
-  def self.search(query)
-    Search::InMemory.new.search(@records, query)
+  def self.search(query, sort: nil)
+    Search::InMemory.new.search(@records, query, sort: sort)
   end
 end
