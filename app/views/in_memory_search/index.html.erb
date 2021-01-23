@@ -10,7 +10,10 @@
     <% end %>
   <% end %>
 
-  <p>Searched for "<span class="font-semibold text-indigo-500"><%= params[:q] %></span>" and got <%= @results.count %> records</p>
+  <p>
+    Searched for "<span class="font-semibold text-indigo-500"><%= params[:q] %></span>" and got <%= @results.count %> records.
+    Sorted by <%= select_tag :sort, options_for_select([['Relevance', '_score_desc'], ['Title A-Z', 'title_asc'], ['Title Z-A'], ['Other', 'other']]), class: 'rounded-md py-1 border-indigo-200' %>
+  </p>
   <table class="table-auto mt-4 results">
     <thead class="border-b-2">
       <tr class="mt-2 mb-1">
