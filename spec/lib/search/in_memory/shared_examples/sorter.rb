@@ -26,15 +26,27 @@ RSpec.shared_examples Search::InMemory::Sorter do
     it { is_expected.to eq([record_1, record_2, record_3]) }
 
     describe 'and sorting by ascending order' do
-      let(:sort) { { field: 'title', direction: 'ascending' } }
+      let(:sort) { { field: 'title', direction: 'asc' } }
 
       it { is_expected.to eq([record_2, record_1, record_3]) }
+
+      context 'record with nil value' do
+        let(:record_1) { { title: nil } }
+
+        it { is_expected.to eq([record_1, record_2, record_3]) }
+      end
     end
 
     describe 'and sorting by descending order' do
-      let(:sort) { { field: 'title', direction: 'descending' } }
+      let(:sort) { { field: 'title', direction: 'desc' } }
 
       it { is_expected.to eq([record_3, record_1, record_2]) }
+
+      context 'record with nil value' do
+        let(:record_1) { { title: nil } }
+
+        it { is_expected.to eq([record_3, record_2, record_1]) }
+      end
     end
   end
 end
