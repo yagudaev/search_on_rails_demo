@@ -12,7 +12,7 @@
 
   <p>
     Searched for "<span class="font-semibold text-indigo-500"><%= params[:q] %></span>" and got <%= @results.count %> records.
-    Sorted by <%= select_tag :sort, options_for_select([['Relevance', '_score_desc'], ['Title A-Z', 'title_asc'], ['Title Z-A', 'title_desc'], ['Other', 'other']], @sort_by), include_blank: true, class: 'rounded-md py-1 border-indigo-200' %>
+    Sorted by <%= select_tag :sort, options_for_select(@sort_options, @sort_by), class: 'rounded-md py-1 border-indigo-200', onchange: 'handleSortChange(event)' %>
   </p>
   <table class="table-auto mt-4 results">
     <thead class="border-b-2">
