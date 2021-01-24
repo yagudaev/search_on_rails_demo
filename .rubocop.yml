@@ -32,3 +32,6 @@ Style/Documentation:
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: single_quotes
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
