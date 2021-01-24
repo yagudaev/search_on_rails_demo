@@ -3,6 +3,7 @@ module Search
     include Matcher
     include Highlighter
     include Sorter
+    include Scorer
 
     def search(records, query, options = {})
       query_string = remove_stop_words(query)
