@@ -3,6 +3,11 @@ module Search
     module Scorer
       BASE_POWER = 10
 
+      PERFECT_MATCH_SCORE = 1
+      PARTIAL_START_MATCH_SCORE = 0.7
+      PARTIAL_MATCH_SCORE = 0.4
+      NO_MATCH_SCORE = 0
+
       def score(collection, query, weights = nil)
         collection.map do |record|
           { **record, _score: record_score(record, query, weights) }
@@ -13,26 +18,40 @@ module Search
         record.reduce(0) do |total, (key, value)|
           next total unless value.is_a?(String)
 
-          total + field_score(value, query)
+          total + field_score(query, value)
         end
       end
 
-      def field_score(value, query)
-        return 0 if query.empty?
-        return 1 if query == value
+      def field_score(query, text)
+        return NO_MATCH_SCORE if query.empty?
+        return PERFECT_MATCH_SCORE if query == text
 
-        start_pos = 0
+        matches = find_matches(query, text)
+        return NO_MATCH_SCORE if matches.empty?
+
         score = 0
 
+        matches.each_with_index do |match, index|
+          score += index == 0 && match == 0 ? PARTIAL_START_MATCH_SCORE : PARTIAL_MATCH_SCORE
+        end
+
+        score
+      end
+
+      private
+
+      def find_matches(query, text)
+        start_pos = 0
+        matches = []
+
         loop do
-          start_pos = value.index(query, start_pos)
-          return score unless start_pos
+          match = text.index(query, start_pos)
+          return matches unless match
 
-          score += 0.7 if start_pos == 0
-          score += 0.4 if start_pos > 0
+          matches << match
 
-          start_pos += query.length
-          return score if start_pos >= value.length
+          start_pos = match + query.length
+          return matches if start_pos >= text.length
         end
       end
     end

@@ -51,12 +51,8 @@ RSpec.shared_examples Search::InMemory::Scorer do
   end
 
   # weights for fields power
-  # full-match ratio 1  10
-  # start partial-match 0.7 * 10^(weight)
-  # middle/end partial match 0.4 * 10^(weight)
-  # multiple matches
+
 
   # position based pass in the match locations
 
-  # fuzzy-match ?
 end
