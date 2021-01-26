@@ -55,6 +55,26 @@ RSpec.shared_examples Search::InMemory::Scorer do
       let(:query) { 'The Matrix' }
 
       it { is_expected.to eq([{ **record, _score: 10 }]) }
+
+      context 'when matching on non-weighted field' do
+        let(:query) { 'Keenu' }
+
+        it { is_expected.to eq([{ **record, _score: 0.7 }]) }
+      end
+    end
+
+    context 'when multiple weight are provided' do
+      let(:weights) { [:title, :cast] }
+      let(:record) { { title: 'The Matrix', cast: 'Keenu Reeves' } }
+      let(:query) { 'The Matrix' }
+
+      it { is_expected.to eq([{ **record, _score: 100 }]) }
+
+      context 'when multiple fields match' do
+        let(:record) { { title: 'The Matrix', cast: 'Keenu Reeves (from The Matrix)' } }
+
+        it { is_expected.to eq([{ **record, _score: 104 }]) }
+      end
     end
   end
 
@@ -68,10 +88,4 @@ RSpec.shared_examples Search::InMemory::Scorer do
       it { is_expected.to eq([{ **record_1, _score: 1 }, { **record_2, _score: 0 }]) }
     end
   end
-
-  # weights for fields power
-
-
-  # position based pass in the match locations
-
 end
