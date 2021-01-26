@@ -14,11 +14,11 @@ module Search
         end
       end
 
-      def record_score(record, query, _weights = nil)
-        record.reduce(0) do |total, (key, value)|
+      def record_score(record, query, weights = nil)
+        record.reduce(0) do |total, (field, value)|
           next total unless value.is_a?(String)
 
-          total + field_score(query, value)
+          total + (weight_multiplies(weights)[field] || 1) * field_score(query, value)
         end
       end
 
@@ -53,6 +53,14 @@ module Search
           start_pos = match + query.length
           return matches if start_pos >= text.length
         end
+      end
+
+      def weight_multiplies(weights)
+        @weight_multiplies ||= weights&.reverse&.inject({}) do |memo, field|
+          weight_factor = memo.length + 1
+          memo[field] = BASE_POWER ** weight_factor
+          memo
+        end || {}
       end
     end
   end

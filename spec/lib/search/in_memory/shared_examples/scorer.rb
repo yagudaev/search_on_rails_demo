@@ -15,38 +15,57 @@ RSpec.shared_examples Search::InMemory::Scorer do
     let(:record) { { title: 'Matrix' } }
     let(:query) { 'Matrix' }
 
-    describe 'full match' do
+    context 'when full match' do
       it { is_expected.to eq([{ **record, _score: 1 }]) }
     end
 
-    describe 'partial match start' do
+    context 'when partial match start' do
       let(:record) { { title: 'Matrix: Reloaded' } }
 
       it { is_expected.to eq([{ **record, _score: 0.7 }]) }
     end
 
-    describe 'partial match middle or end' do
+    context 'when partial match middle or end' do
       let(:record) { { title: 'The Matrix: Reloaded' } }
 
       it { is_expected.to eq([{ **record, _score: 0.4 }]) }
     end
 
-    describe 'multiple partial matches on same field' do
+    context 'when multiple partial matches on same field' do
       let(:record) { { title: 'Matrix multipied by another Matrix' } }
 
       it { is_expected.to eq([{ **record, _score: 1.1 }]) }
     end
 
-    describe 'no match' do
+    context 'when no match' do
       let(:record) { { title: 'Something Else' } }
 
       it { is_expected.to eq([{ **record, _score: 0 }]) }
     end
 
-    describe 'when the query is empty' do
+    context 'when the query is empty' do
       let(:query) { '' }
 
       it { is_expected.to eq([{ **record, _score: 0 }]) }
+    end
+
+    context 'when one weight is provided' do
+      let(:weights) { [:title] }
+      let(:record) { { title: 'The Matrix', cast: 'Keenu Reeves' } }
+      let(:query) { 'The Matrix' }
+
+      it { is_expected.to eq([{ **record, _score: 10 }]) }
+    end
+  end
+
+  context 'when the collection has multiple items' do
+    let(:collection) { [record_1, record_2] }
+    let(:record_1) { { title: 'Matrix' } }
+    let(:record_2) { { title: 'Titanic' } }
+    let(:query) { 'Matrix' }
+
+    context 'when full match' do
+      it { is_expected.to eq([{ **record_1, _score: 1 }, { **record_2, _score: 0 }]) }
     end
   end
 
