@@ -41,3 +41,6 @@ Style/NumericPredicate:
 
 Layout/SpaceAroundOperators:
   Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
