@@ -38,3 +38,6 @@ RSpec/MultipleMemoizedHelpers:
 
 Style/NumericPredicate:
   Enabled: false
+
+Layout/SpaceAroundOperators:
+  Enabled: false
