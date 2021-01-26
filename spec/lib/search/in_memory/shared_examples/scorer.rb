@@ -31,8 +31,20 @@ RSpec.shared_examples Search::InMemory::Scorer do
       it { is_expected.to eq([{ **record, _score: 0.4 }]) }
     end
 
+    describe 'multiple partial matches on same field' do
+      let(:record) { { title: 'Matrix multipied by another Matrix' } }
+
+      it { is_expected.to eq([{ **record, _score: 1.1 }]) }
+    end
+
     describe 'no match' do
       let(:record) { { title: 'Something Else' } }
+
+      it { is_expected.to eq([{ **record, _score: 0 }]) }
+    end
+
+    describe 'when the query is empty' do
+      let(:query) { '' }
 
       it { is_expected.to eq([{ **record, _score: 0 }]) }
     end
