@@ -35,3 +35,6 @@ Style/StringLiterals:
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
