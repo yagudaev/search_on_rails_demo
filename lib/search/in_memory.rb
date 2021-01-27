@@ -11,6 +11,7 @@ module Search
 
       results = match(results, query_string)
       results = highlight(results, query_string)
+      results = score(results, query_string, options[:weights]) if options[:with_score]
       results = sort(results, query_string, options[:sort]) if options[:sort]
 
       results
