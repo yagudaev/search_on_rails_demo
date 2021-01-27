@@ -74,6 +74,18 @@ RSpec.shared_examples Search::InMemory::Scorer do
         let(:record) { { title: 'The Matrix', cast: 'Keenu Reeves (from The Matrix)' } }
 
         it { is_expected.to eq([{ **record, _score: 104 }]) }
+
+        context 'when weights are strings' do
+          let(:weights) { ['title', 'cast'] }
+
+          it { is_expected.to eq([{ **record, _score: 104 }]) }
+        end
+
+        context 'when record uses string keys' do
+          let(:record) { { 'title' => 'The Matrix', 'cast' => 'Keenu Reeves (from The Matrix)' } }
+
+          it { is_expected.to eq([{ **record, _score: 104 }]) }
+        end
       end
     end
   end

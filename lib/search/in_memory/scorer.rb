@@ -18,7 +18,7 @@ module Search
         record.reduce(0) do |total, (field, value)|
           next total unless value.is_a?(String)
 
-          total + (weight_multiplies(weights)[field] || 1) * field_score(query, value)
+          total + (weight_multiplies(weights)[field.to_sym] || 1) * field_score(query, value)
         end
       end
 
@@ -58,7 +58,7 @@ module Search
       def weight_multiplies(weights)
         @weight_multiplies ||= weights&.reverse&.inject({}) do |memo, field|
           weight_factor = memo.length + 1
-          memo[field] = BASE_POWER ** weight_factor
+          memo[field.to_sym] = BASE_POWER ** weight_factor
           memo
         end || {}
       end
