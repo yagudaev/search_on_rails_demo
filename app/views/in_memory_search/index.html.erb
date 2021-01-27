@@ -29,7 +29,7 @@
       <% @results_page.each_with_index do |result, i| %>
         <tr class="">
           <% result.values.each do |value| %>
-            <td><%= value&.html_safe %></td>
+            <td><%= value&.to_s&.html_safe %></td>
           <% end %>
         </tr>
       <% end %>
