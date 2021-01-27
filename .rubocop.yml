@@ -44,3 +44,6 @@ Layout/SpaceAroundOperators:
 
 Style/SymbolArray:
   Enabled: false
+
+Style/WordArray:
+  Enabled: false
