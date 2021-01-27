@@ -17,12 +17,14 @@ window.handleSortChange = (event) => {
   const target = event.target
   const sort = target.value
 
-  if (['_score_desc', 'other'].includes(sort)) return
+  if (['other'].includes(sort)) return
 
   const match = sort.match(/(.+)_(desc|asc)$/)
   const field = match[1]
   const direction = match[2]
+  const params = new URLSearchParams(window.location.search)
+  const query = params.get('q')
 
-  const location = `sort[field]=${field}&sort[direction]=${direction}`
+  const location = `q=${query}&sort[field]=${field}&sort[direction]=${direction}`
   window.location.search = location
 }
