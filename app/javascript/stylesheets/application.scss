@@ -9,38 +9,36 @@
 }
 
 .results th.type {
-  min-width: 80px;
+  width: 80px;
 }
 
 .results th.cast {
-  min-width: 80px;
+  width: 80px;
 }
 
 .results th.director {
-  min-width: 100px;
+  width: 100px;
 }
 
 .results th.country {
-  min-width: 100px;
+  width: 100px;
 }
 
 .results th.date_added {
-  min-width: 125px;
+  width: 125px;
 }
 
 .results th.listed_in {
-  min-width: 100px;
+  width: 100px;
 }
 
 .results th.rating {
-  min-width: 90px;
+  width: 90px;
 }
 
 .results th.duration {
-  min-width: 110px;
+  width: 110px;
 }
-
-
 
 .results tr:hover b {
   @apply bg-indigo-500;
