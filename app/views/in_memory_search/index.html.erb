@@ -1,10 +1,10 @@
-<div class="container flex">
-  <aside class="w-3/12 p-2">
-    <%= render 'shared/search/facets', facets: @facets %>
-  </aside>
-  <main class="w-9/12">
-    <h1 class="">Simple In-Memory Search</h1>
-    <%= form_with method: :get do |f| %>
+<%= form_with method: :get do |f| %>
+  <div class="container flex">
+    <aside class="w-3/12 lg:w-2/12 p-2">
+      <%= render 'shared/search/facets', facets: @facets %>
+    </aside>
+    <main class="w-9/12 lg:w-10/12">
+      <h1 class="">Simple In-Memory Search</h1>
       <%= f.text_field :q, placeholder: 'search', value: params[:q], class: 'rounded-md py-1 border-indigo-200' %>
       <%= f.button :submit, class: 'border border-indigo-500 bg-indigo-500 text-white rounded-md px-2 py-1 m-2 transition duration-200 ease select-none hover:bg-indigo-600 focus:outline-none focus:shadow-outline' do %>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" height="18" style="margin-top: -4px;" viewBox="0 0 24 24" stroke="currentColor" class="inline">
@@ -12,41 +12,40 @@
         </svg>
         <span>Search</span>
       <% end %>
-    <% end %>
-
-    <p>
-      Searched for "<span class="font-semibold text-indigo-500"><%= params[:q] %></span>" and got <%= @results.count %> records.
-      Sorted by <%= select_tag :sort, options_for_select(@sort_options, @sort_by), class: 'rounded-md py-1 border-indigo-200', onchange: 'handleSortChange(event)' %>
-    </p>
-    <table class="table-auto mt-4 results">
-      <thead class="border-b-2">
-        <tr class="mt-2 mb-1">
-          <% @results_page.first&.keys&.each do |key| %>
-            <th class="px-2 pb-0 text-left font-medium text-gray-900 <%= key %>">
-              <%= render 'shared/table/sortable_header', key: key %>
-            </th>
-          <% end %>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @results_page.each_with_index do |result, i| %>
-          <tr class="">
-            <% result.values.each do |value| %>
-              <td><%= value&.to_s&.html_safe %></td>
+      <p>
+        Searched for "<span class="font-semibold text-indigo-500"><%= params[:q] %></span>" and got <%= @results.count %> records.
+        Sorted by <%= select_tag :sort, options_for_select(@sort_options, @sort_by), class: 'rounded-md py-1 border-indigo-200', onchange: 'handleSortChange(event)' %>
+      </p>
+      <table class="table-auto mt-4 results">
+        <thead class="border-b-2">
+          <tr class="mt-2 mb-1">
+            <% @results_page.first&.keys&.each do |key| %>
+              <th class="px-2 pb-0 text-left font-medium text-gray-900 <%= key %>">
+                <%= render 'shared/table/sortable_header', key: key %>
+              </th>
             <% end %>
           </tr>
-        <% end %>
-      <tbody>
-    </table>
+        </thead>
 
-    <div class="flex justify-center mt-4">
-      <div class="flex flex-col items-center">
-        <% if @pagy.pages > 1 %>
-        <div><%== pagy_nav(@pagy) %></div>
-        <% end %>
-        <div><%== pagy_info(@pagy) %></div>
+        <tbody>
+          <% @results_page.each_with_index do |result, i| %>
+            <tr class="">
+              <% result.values.each do |value| %>
+                <td><%= value&.to_s&.html_safe %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        <tbody>
+      </table>
+
+      <div class="flex justify-center mt-4">
+        <div class="flex flex-col items-center">
+          <% if @pagy.pages > 1 %>
+          <div><%== pagy_nav(@pagy) %></div>
+          <% end %>
+          <div><%== pagy_info(@pagy) %></div>
+        </div>
       </div>
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
+<% end %>
