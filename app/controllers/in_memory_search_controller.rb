@@ -7,7 +7,7 @@ class InMemorySearchController < ApplicationController
     @sort_by = sort_by
     @sort_options = [['Relevance', '_score_desc'], ['Title A-Z', 'title_asc'], ['Title Z-A', 'title_desc'], ['Other', 'other']]
 
-    @pagy, @results_page = pagy_array(@results)
+    @pagy, @results_page = pagy_array(@results, items: 30)
   end
 
   private
