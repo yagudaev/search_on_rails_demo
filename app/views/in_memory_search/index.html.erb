@@ -14,7 +14,7 @@
       <% end %>
       <p>
         Searched for "<span class="font-semibold text-indigo-500"><%= params[:q] %></span>" and got <%= @results.count %> records.
-        Sorted by <%= select_tag :sort, options_for_select(@sort_options, @sort_by), class: 'rounded-md py-1 border-indigo-200', onchange: 'handleSortChange(event)' %>
+        Sorted by <%= select_tag :sort_selectbox, options_for_select(@sort_options, @sort_by), class: 'rounded-md py-1 border-indigo-200', onchange: 'handleSortChange(event)' %>
       </p>
       <table class="table-auto mt-4 results">
         <thead class="border-b-2">
@@ -35,7 +35,7 @@
               <% end %>
             </tr>
           <% end %>
-        <tbody>
+        </tbody>
       </table>
 
       <div class="flex justify-center mt-4">
