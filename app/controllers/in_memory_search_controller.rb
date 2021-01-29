@@ -3,6 +3,7 @@ class InMemorySearchController < ApplicationController
     @results = Title.import
 
     @results = Title.search(params[:q] || '', sort: params[:sort], weights: [:title, :director, :cast], with_score: true)
+    @facets = Title.facets(@results)
     @sort_by = sort_by
     @sort_options = [['Relevance', '_score_desc'], ['Title A-Z', 'title_asc'], ['Title Z-A', 'title_desc'], ['Other', 'other']]
 

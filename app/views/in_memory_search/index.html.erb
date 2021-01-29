@@ -1,8 +1,6 @@
 <div class="container flex">
   <aside class="w-3/12 p-2">
-    <h2>Type<h2>
-    <h2>Rating<h2>
-    <h2>Country<h2>
+    <%= render 'shared/search/facets', facets: @facets %>
   </aside>
   <main class="w-9/12">
     <h1 class="">Simple In-Memory Search</h1>
