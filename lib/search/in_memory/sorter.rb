@@ -6,8 +6,8 @@ module Search
         return collection unless sort_options
 
         collection.sort do |record_a, record_b|
-          a = record_a[sort_options[:field]&.to_sym]
-          b = record_b[sort_options[:field]&.to_sym]
+          a = record_a.with_indifferent_access[sort_options[:field]]
+          b = record_b.with_indifferent_access[sort_options[:field]]
           direction = sort_options[:direction]
 
           next direction == 'asc' ? -1 : 1 if a.nil?
