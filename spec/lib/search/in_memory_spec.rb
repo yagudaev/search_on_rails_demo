@@ -3,12 +3,14 @@ require 'lib/search/in_memory/shared_examples/matcher'
 require 'lib/search/in_memory/shared_examples/highlighter'
 require 'lib/search/in_memory/shared_examples/sorter'
 require 'lib/search/in_memory/shared_examples/scorer'
+require 'lib/search/in_memory/shared_examples/faceter'
 
 RSpec.describe Search::InMemory do
   it_behaves_like Search::InMemory::Matcher
   it_behaves_like Search::InMemory::Highlighter
   it_behaves_like Search::InMemory::Sorter
   it_behaves_like Search::InMemory::Scorer
+  it_behaves_like Search::InMemory::Faceter
 
   # combines all
   # describe '.search' do

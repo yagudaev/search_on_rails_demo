@@ -9,25 +9,7 @@ class Title
     Search::InMemory.new.search(@records, query, options)
   end
 
-  def self.facets(results)
-    @facets = [
-      {
-        label: 'Type',
-        field: 'type',
-        items: [
-          {
-            label: 'Movie',
-            value: 'movie',
-            count: 6
-          },
-          {
-            label: 'TV Show',
-            value: 'tv_show',
-            count: 2
-          }
-        ]
-      }
-    ]
-    # Search::InMemory.new.facets(results)
+  def self.facets(results, fields)
+    Search::InMemory.new.facets(results, fields)
   end
 end

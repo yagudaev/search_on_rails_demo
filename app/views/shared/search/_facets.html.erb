@@ -1,6 +1,6 @@
 <%= form_with method: :get do |f| %>
   <% facets.each do |facet| %>
-    <h2 class="mt-2"><%= facet[:label] %><h2>
+    <h2 class="mt-2 font-semibold"><%= facet[:label] %><h2>
     <ul>
       <% facet[:items].each do |item| %>
         <li><label><%= check_box facet[:field], item[:value] %><span class="ml-2"><%= item[:label] %> (<%= item[:count] %>)</span></label></li>

@@ -4,6 +4,7 @@ module Search
     include Highlighter
     include Sorter
     include Scorer
+    include Faceter
 
     def search(records, query, options = {})
       query_string = remove_stop_words(query)
