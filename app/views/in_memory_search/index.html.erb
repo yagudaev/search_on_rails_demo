@@ -1,7 +1,7 @@
 <%= form_with method: :get do |f| %>
   <div class="container flex">
     <aside class="w-3/12 lg:w-2/12 p-2">
-      <%= render 'shared/search/facets', facets: @facets %>
+      <%= render 'shared/search/facets', facets: @facets, f: f %>
     </aside>
     <main class="w-9/12 lg:w-10/12">
       <h1 class="">Simple In-Memory Search</h1>

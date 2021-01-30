@@ -3,7 +3,12 @@
     <h2 class="mt-2 font-semibold"><%= facet[:label] %><h2>
     <ul>
       <% facet[:items].sort_by { |item| -item[:count] }.first(10).each do |item| %>
-        <li><label><%= check_box facet[:field], item[:value], class: 'rounded-sm py-1 border-indigo-200' %><span class="ml-2"><%= item[:label] %><span class="text-gray-400 ml-1 font-light">(<%= item[:count] %>)</span></label></li>
+        <li>
+          <label>
+            <%= check_box 'filters', facet[:field], { multiple: true, class: 'rounded-sm py-1 border-indigo-200', onchange: 'this.form.submit()' }, item[:value], nil %>
+            <span class="ml-2"><%= item[:label] %><span class="text-gray-400 ml-1 font-light">(<%= item[:count] %>)</span>
+          </label>
+        </li>
       <% end %>
     </ul>
   <% end %>

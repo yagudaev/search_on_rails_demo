@@ -15,7 +15,7 @@ module Search
 
       def items(collection, field)
         collection.group_by { |record| record[field] }.map do |key, values|
-          { label: key.to_s.titleize, value: key.to_s.titleize, count: values.count }
+          { label: key.to_s, value: key.to_s, count: values.count }
         end
       end
     end
