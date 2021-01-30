@@ -15,6 +15,11 @@ class InMemorySearchController < ApplicationController
 
   private
 
+  def permitted_params
+    params.permit(:q, sort: [:field, :direction])
+  end
+  helper_method :permitted_params
+
   def filter_params
     params.permit(filters: allowed_filters_params)
   end
