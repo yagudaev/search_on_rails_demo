@@ -16,7 +16,7 @@ class InMemorySearchController < ApplicationController
   private
 
   def permitted_params
-    params.permit(:q, sort: [:field, :direction])
+    params.permit(:q, sort: [:field, :direction]).merge(filter_params)
   end
   helper_method :permitted_params
 
