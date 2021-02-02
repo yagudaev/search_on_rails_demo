@@ -11,7 +11,7 @@ module Search
       query_string = remove_stop_words(query)
       results = records.map(&:with_indifferent_access)
 
-      results = filter(results, query_string, options[:filters]) if options[:filters]
+      results = filter(results, options[:filters]) if options[:filters]
       results = match(results, query_string)
       results = highlight(results, query_string)
       results = score(results, query_string, options[:weights]) if options[:with_score]

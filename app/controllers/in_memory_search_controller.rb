@@ -4,8 +4,15 @@ class InMemorySearchController < ApplicationController
   def index
     @results = Title.import
 
-    @filters = OpenStruct.new filter_params.dig(:filters)&.to_h
-    @results = Title.search(params[:q] || '', sort: params[:sort], weights: [:title, :director, :cast], with_score: true)
+    @filters = filter_params.dig(:filters)&.to_h
+    @results = Title.search(
+      params[:q] || '',
+      sort: params[:sort],
+      filters: @filters,
+      weights: [:title, :director, :cast],
+      with_score: true
+    )
+    @filters = OpenStruct.new @filters
     @facets = Title.facets(@results, ALLOWED_FILTERS)
     @sort_by = sort_by
     @sort_options = [['Relevance', '_score_desc'], ['Title A-Z', 'title_asc'], ['Title Z-A', 'title_desc'], ['Other', 'other']]

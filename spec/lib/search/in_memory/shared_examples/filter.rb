@@ -3,7 +3,7 @@ RSpec.shared_examples Search::InMemory::Filter do
 
   let(:collection) { [] }
   let(:instance) { described_class.new }
-  let(:filters) { [{ field: 'type', values: ['Movie'] }] }
+  let(:filters) { { type: ['Movie'] } }
 
   context 'when given an empty collection' do
     it { is_expected.to match_array([]) }

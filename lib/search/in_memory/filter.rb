@@ -3,10 +3,7 @@ module Search
     module Filter
       def filter(collection, filters)
         collection.select do |record|
-          filters.all? do |filter|
-            field = filter[:field]&.to_sym
-            values = filter[:values]
-
+          filters.all? do |field, values|
             values&.is_a?(Array) ?
               values&.include?(record[field]) :
               values == record[field]
