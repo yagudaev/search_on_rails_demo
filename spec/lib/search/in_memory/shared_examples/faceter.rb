@@ -24,7 +24,7 @@ RSpec.shared_examples Search::InMemory::Faceter do
     let(:expected_items) do
       [
         { label: 'Movie', value: 'Movie', count: 1 },
-        { label: 'Tv Show', value: 'Tv Show', count: 1 }
+        { label: 'TV-Show', value: 'TV-Show', count: 1 }
       ]
     end
 
