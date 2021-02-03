@@ -7,13 +7,13 @@ module Search
     include Faceter
     include Filter
 
-    def search(records, query, options = {})
+    def search(records, query, options = { highlight: true })
       query_string = remove_stop_words(query)
       results = records.map(&:with_indifferent_access)
 
       results = filter(results, options[:filters]) if options[:filters]
       results = match(results, query_string)
-      results = highlight(results, query_string)
+      results = highlight(results, query_string) if options[:highlight]
       results = score(results, query_string, options[:weights]) if options[:with_score]
       results = sort(results, query_string, options[:sort]) if options[:sort]
 

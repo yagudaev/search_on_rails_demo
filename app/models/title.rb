@@ -9,7 +9,7 @@ class Title
     Search::InMemory.new.search(@records, query, options)
   end
 
-  def self.facets(results, fields)
-    Search::InMemory.new.facets(results, fields)
+  def self.facets(collection, query, search_options)
+    Search::InMemory.new.facets(collection, query, search_options)
   end
 end

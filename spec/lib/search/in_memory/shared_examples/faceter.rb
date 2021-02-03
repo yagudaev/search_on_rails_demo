@@ -1,9 +1,10 @@
 RSpec.shared_examples Search::InMemory::Faceter do
-  subject { instance.facets(collection, fields) }
+  subject { instance.facets(collection, query, { facets: facets }) }
 
   let(:collection) { [] }
   let(:instance) { described_class.new }
-  let(:fields) { [:type] }
+  let(:facets) { [:type] }
+  let(:query) { '' }
 
   context 'when given an empty collection' do
     it { is_expected.to match_array([{ field: "type", items: [], label: "Type" }]) }
@@ -34,5 +35,7 @@ RSpec.shared_examples Search::InMemory::Faceter do
   # TODO: check it works with both strings and symbol keys
   # TODO: empty values
   # TODO: sorting count
+
+  # TODO: with a query
 
 end

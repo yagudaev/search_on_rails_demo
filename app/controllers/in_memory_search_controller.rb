@@ -2,20 +2,27 @@ class InMemorySearchController < ApplicationController
   ALLOWED_FILTERS = %w[type rating release_year duration country].freeze
 
   def index
-    @results = Title.import
+    @collection = Title.import
 
     @filters = filter_params.dig(:filters)&.to_h
-    @results = Title.search(
-      params[:q] || '',
+
+    query = params[:q] || ''
+    search_options = {
       sort: params[:sort],
       filters: @filters,
       weights: [:title, :director, :cast],
-      with_score: true
-    )
-    @filters = OpenStruct.new @filters
-    @facets = Title.facets(@results, ALLOWED_FILTERS)
+      with_score: true,
+      facets: ALLOWED_FILTERS,
+      highlight: true
+    }
+
+    # TODO: consider changing the object
+    @results = Title.search(query, search_options)
+    @facets = Title.facets(@collection, query, search_options)
     @sort_by = sort_by
     @sort_options = [['Relevance', '_score_desc'], ['Title A-Z', 'title_asc'], ['Title Z-A', 'title_desc'], ['Other', 'other']]
+
+    @filters = OpenStruct.new @filters
 
     @pagy, @results_page = pagy_array(@results, items: 30)
   end
