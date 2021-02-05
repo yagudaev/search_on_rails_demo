@@ -29,8 +29,6 @@ class InMemorySearchController < ApplicationController
     @pagy, @results_page = pagy_array(@results, items: 30)
   end
 
-  private
-
   def permitted_params
     params.permit(:q, sort: [:field, :direction]).merge(filter_params)
   end

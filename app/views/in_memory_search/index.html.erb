@@ -31,7 +31,11 @@
           <% @results_page.each_with_index do |result, i| %>
             <tr class="">
               <% result.values.each do |value| %>
-                <td><%= value&.to_s&.html_safe %></td>
+                <td>
+                  <%= link_to title_path(result["show_id"], q: params[:q]) do %>
+                    <%= value&.to_s&.html_safe %>
+                  <% end %>
+                </td>
               <% end %>
             </tr>
           <% end %>
