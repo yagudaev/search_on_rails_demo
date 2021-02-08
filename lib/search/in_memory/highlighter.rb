@@ -12,24 +12,9 @@ module Search
       private
 
       def with_highlights(text:, query_string:)
-        return text if text.blank?
+        return text if query_string.empty?
 
-        start_pos = text.index(query_string)
-
-        return text if query_string.blank?
-        return text unless start_pos
-
-        add_markup(text: text, start_pos: start_pos, length: query_string.length)
-      end
-
-      def add_markup(text:, start_pos:, length:)
-        opening_tag = '<b>'
-        closing_tag = '</b>'
-
-        highligthed = text.insert(start_pos, opening_tag)
-        end_pos = start_pos + opening_tag.length + length
-
-        highligthed.insert(end_pos, closing_tag)
+        text.gsub(query_string, "<b>#{query_string}</b>")
       end
     end
   end
