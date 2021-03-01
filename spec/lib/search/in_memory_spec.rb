@@ -5,6 +5,7 @@ require 'lib/search/in_memory/shared_examples/sorter'
 require 'lib/search/in_memory/shared_examples/scorer'
 require 'lib/search/in_memory/shared_examples/faceter'
 require 'lib/search/in_memory/shared_examples/filter'
+require 'lib/search/in_memory/shared_examples/indexer'
 
 RSpec.describe Search::InMemory do
   it_behaves_like Search::InMemory::Matcher
@@ -13,6 +14,7 @@ RSpec.describe Search::InMemory do
   it_behaves_like Search::InMemory::Scorer
   it_behaves_like Search::InMemory::Faceter
   it_behaves_like Search::InMemory::Filter
+  it_behaves_like Search::InMemory::Indexer
 
   # combines all
   # describe '.search' do
