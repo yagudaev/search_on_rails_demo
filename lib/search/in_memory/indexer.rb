@@ -5,16 +5,24 @@ module Search
         inverted_index = {}
 
         collection.each do |record|
-          field = fields.first
-          words = record[field]&.split(' ') || []
-          words.each do |word|
-            word = word.downcase
-            inverted_index[word] ||= []
-            inverted_index[word].push(record[:id])
+          fields.each do |field|
+            index_field(field, record, inverted_index)
           end
         end
 
         inverted_index
+      end
+
+      private
+
+      def index_field(field, record, inverted_index)
+        words = record[field]&.split(' ') || [] # tokenization
+        words.each do |word|
+          word = word.downcase # normalization
+          inverted_index[field] ||= {}
+          inverted_index[field][word] ||= []
+          inverted_index[field][word].push(record[:id])
+        end
       end
     end
   end
