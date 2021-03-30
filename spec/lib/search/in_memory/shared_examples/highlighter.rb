@@ -33,6 +33,16 @@ RSpec.shared_examples Search::InMemory::Highlighter do
       end
     end
 
+    context 'with a nil field value' do
+      subject { super().first[:title] }
+
+      let(:query) { 'Titanic' }
+      let(:record) { { title: nil } }
+      let(:collection) { [record] }
+
+      it { is_expected.to be_nil }
+    end
+
     context 'with multiple fields' do
       let(:record) { { title: 'Die Hard', cast: 'Bruce Willis' } }
       let(:collection) { [record] }
