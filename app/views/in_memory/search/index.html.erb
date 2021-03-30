@@ -32,7 +32,7 @@
             <tr class="">
               <% result.values.each do |value| %>
                 <td>
-                  <%= link_to title_path(result["show_id"], q: params[:q]), class: 'text-gray-700 font-normal' do %>
+                  <%= link_to in_memory_title_path(result["show_id"], q: params[:q]), class: 'text-gray-700 font-normal' do %>
                     <%= value&.to_s&.html_safe %>
                   <% end %>
                 </td>
