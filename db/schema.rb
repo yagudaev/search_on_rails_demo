@@ -18,10 +18,11 @@ ActiveRecord::Schema.define(version: 2021_03_30_182154) do
   create_table "appearances", force: :cascade do |t|
     t.bigint "title_id", null: false
     t.bigint "participant_id", null: false
-    t.string "role"
+    t.integer "role"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["participant_id"], name: "index_appearances_on_participant_id"
+    t.index ["role", "participant_id", "title_id"], name: "index_appearances_on_role_and_participant_id_and_title_id", unique: true
     t.index ["role"], name: "index_appearances_on_role"
     t.index ["title_id"], name: "index_appearances_on_title_id"
   end
