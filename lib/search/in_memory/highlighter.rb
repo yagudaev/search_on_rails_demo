@@ -13,6 +13,7 @@ module Search
 
       def with_highlights(text:, query_string:)
         return text if query_string.empty?
+        return nil if text.nil?
 
         text.gsub(query_string, "<b>#{query_string}</b>")
       end

@@ -30,8 +30,8 @@ Style/Documentation:
   Enabled: false
 
 Style/StringLiterals:
-  Enabled: true
-  EnforcedStyle: single_quotes
+  Enabled: false
+  EnforcedStyle: double_quotes
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false

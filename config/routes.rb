@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
   get "home/index"
-  resources :in_memory_search, only: [:index]
-  resources :titles, only: [:show]
+  namespace :in_memory do
+    resources :search, only: [:index]
+    resources :titles, only: [:show]
+  end
+
   mount Searchjoy::Engine, at: "searchjoy"
 
   root "home#index"
