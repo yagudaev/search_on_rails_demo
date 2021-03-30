@@ -2,30 +2,55 @@ GROUP_SIZE = 10_000
 
 def main
   movies_json = JSON.parse(open("db/imdb_movies.json").read)
+  titles_cache = {}
+  participants_cache = {}
 
   ActiveRecord::Base.transaction do
     group_num = 0
     movies_json.in_groups_of(GROUP_SIZE) do |movie_group|
       group_num += 1
 
-      titles = get_titles(movie_group)
-      titles_db = Title.insert_all(titles, returning: %i[id title])
-      puts "Created #{ActiveSupport::NumberHelper.number_to_delimited(group_num * GROUP_SIZE)} title records...."
+      titles = create_titles(movie_group, group_num)
+      participants = create_participants(movie_group, group_num)
 
-      participants = get_participants(movie_group)
-      participants_db = Participant.insert_all(participants, returning: %i[id full_name])
-      puts "Created #{ActiveSupport::NumberHelper.number_to_delimited(group_num * GROUP_SIZE)} participant records...."
-
-      appearances = get_appearances(movie_group, titles_db, participants_db)
-      Appearance.insert_all(appearances)
-      puts "Created #{ActiveSupport::NumberHelper.number_to_delimited(group_num * GROUP_SIZE)} appearances records...."
+      titles.each { |title| titles_cache[title["title"]] = title }
+      participants.each { |participant| participants_cache[participant["full_name"]] = participant }
+      create_appearances(movie_group, titles_cache, participants_cache, group_num)
     end
   end
 
   puts "🏁 Successfully finished creating records"
-  puts "  🎥 Titles: #{Title.count}"
-  puts "  👤 Participants: #{Participant.count}"
-  puts "  🎭 Appearances: #{Appearance.count}"
+  puts "  🎥 Titles: #{ActiveSupport::NumberHelper.number_to_delimited(Title.count)}"
+  puts "  👤 Participants: #{ActiveSupport::NumberHelper.number_to_delimited(Participant.count)}"
+  puts "  🎭 Appearances: #{ActiveSupport::NumberHelper.number_to_delimited(Appearance.count)}"
+end
+
+def create_titles(movie_group, group_num)
+  titles = get_titles(movie_group)
+  titles = Title.insert_all(titles, returning: %i[id title])
+  print_created("titles", group_num)
+
+  titles
+end
+
+def create_participants(movie_group, group_num)
+  participants = get_participants(movie_group)
+  participants = Participant.insert_all(participants, returning: %i[id full_name])
+  print_created("participants", group_num)
+
+  participants
+end
+
+def create_appearances(movie_group, titles, participants, group_num)
+  appearances = get_appearances(movie_group, titles, participants)
+  Appearance.insert_all(appearances)
+  puts "Created #{ActiveSupport::NumberHelper.number_to_delimited(group_num * GROUP_SIZE)} appearances records...."
+
+  appearances
+end
+
+def print_created(record_type, group_num)
+  puts "Created #{ActiveSupport::NumberHelper.number_to_delimited(group_num * GROUP_SIZE)} #{record_type} records...."
 end
 
 def get_titles(movie_group)
@@ -67,12 +92,12 @@ def get_appearances(movie_group, titles, participants)
 end
 
 def serialize_appearance(actor_full_name, movie_title, titles, participants)
-  participant = participants.find { |record| record["full_name"] == actor_full_name }
-  participant ||= Participant.find_by!(full_name: actor_full_name)
+  participant = participants[actor_full_name]
+  title = titles[movie_title]
 
   {
     participant_id: participant["id"],
-    title_id: titles.find { |record| record["title"] == movie_title }["id"],
+    title_id: title["id"],
     role: :actor,
     **dates
   }
@@ -97,4 +122,12 @@ def dates
   }
 end
 
-main
+def measure_time
+  starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+  yield
+  ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+
+  ending - starting
+end
+
+puts "\n⏱ Complete in #{measure_time(&method(:main))}"
