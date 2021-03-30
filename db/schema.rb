@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_05_030047) do
+ActiveRecord::Schema.define(version: 2021_03_30_175859) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,21 @@ ActiveRecord::Schema.define(version: 2021_02_05_030047) do
     t.index ["search_type", "created_at"], name: "index_searchjoy_searches_on_search_type_and_created_at"
     t.index ["search_type", "normalized_query", "created_at"], name: "index_searchjoy_searches_on_search_type_query"
     t.index ["user_id"], name: "index_searchjoy_searches_on_user_id"
+  end
+
+  create_table "titles", force: :cascade do |t|
+    t.string "title"
+    t.string "type"
+    t.integer "year"
+    t.string "image_url"
+    t.string "color"
+    t.decimal "score"
+    t.integer "rating"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["title"], name: "index_titles_on_title"
+    t.index ["type"], name: "index_titles_on_type"
+    t.index ["year"], name: "index_titles_on_year"
   end
 
 end
