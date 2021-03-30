@@ -30,7 +30,7 @@ Style/Documentation:
   Enabled: false
 
 Style/StringLiterals:
-  Enabled: true
+  Enabled: false
   EnforcedStyle: double_quotes
 
 RSpec/MultipleMemoizedHelpers:
