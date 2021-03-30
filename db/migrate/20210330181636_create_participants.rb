@@ -7,7 +7,7 @@ class CreateParticipants < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
-    add_index :participants, :full_name
+    add_index :participants, :full_name, unique: true
     add_index :participants, :first_name
     add_index :participants, :last_name
   end

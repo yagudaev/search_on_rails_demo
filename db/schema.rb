@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2021_03_30_182154) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["first_name"], name: "index_participants_on_first_name"
-    t.index ["full_name"], name: "index_participants_on_full_name"
+    t.index ["full_name"], name: "index_participants_on_full_name", unique: true
     t.index ["last_name"], name: "index_participants_on_last_name"
   end
 
