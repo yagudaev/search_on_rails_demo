@@ -10,10 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_30_175859) do
+ActiveRecord::Schema.define(version: 2021_03_30_182154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "appearances", force: :cascade do |t|
+    t.bigint "title_id", null: false
+    t.bigint "participant_id", null: false
+    t.string "role"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["participant_id"], name: "index_appearances_on_participant_id"
+    t.index ["role"], name: "index_appearances_on_role"
+    t.index ["title_id"], name: "index_appearances_on_title_id"
+  end
+
+  create_table "participants", force: :cascade do |t|
+    t.string "full_name"
+    t.string "first_name"
+    t.string "last_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["first_name"], name: "index_participants_on_first_name"
+    t.index ["full_name"], name: "index_participants_on_full_name"
+    t.index ["last_name"], name: "index_participants_on_last_name"
+  end
 
   create_table "searchjoy_searches", force: :cascade do |t|
     t.bigint "user_id"
@@ -47,4 +69,6 @@ ActiveRecord::Schema.define(version: 2021_03_30_175859) do
     t.index ["year"], name: "index_titles_on_year"
   end
 
+  add_foreign_key "appearances", "participants"
+  add_foreign_key "appearances", "titles"
 end
