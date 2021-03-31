@@ -7,6 +7,8 @@ def main
 
   ActiveRecord::Base.transaction do
     group_num = 0
+    create_admin_user
+
     movies_json.in_groups_of(GROUP_SIZE) do |movie_group|
       group_num += 1
 
@@ -23,6 +25,10 @@ def main
   puts "  🎥 Titles: #{ActiveSupport::NumberHelper.number_to_delimited(Title.count)}"
   puts "  👤 Participants: #{ActiveSupport::NumberHelper.number_to_delimited(Participant.count)}"
   puts "  🎭 Appearances: #{ActiveSupport::NumberHelper.number_to_delimited(Appearance.count)}"
+end
+
+def create_admin_user
+  AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
 end
 
 def create_titles(movie_group, group_num)
