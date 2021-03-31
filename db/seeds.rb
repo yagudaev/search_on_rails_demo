@@ -130,4 +130,4 @@ def measure_time
   ending - starting
 end
 
-puts "\n⏱ Complete in #{measure_time(&method(:main))}"
+puts "\n⏱  Completed in #{measure_time(&method(:main))} seconds"
