@@ -1,6 +1,13 @@
 ActiveAdmin.register Participant do
   permit_params :full_name, :first_name, :last_name
 
+  filter :full_name
+  filter :first_name
+  filter :last_name
+  filter :created_at
+  filter :updated_at
+  filter :acted_in_titles_title, as: :string
+
   show do
     attributes_table do
       row :full_name

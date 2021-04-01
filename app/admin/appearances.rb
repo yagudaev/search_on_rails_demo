@@ -1,18 +1,9 @@
 ActiveAdmin.register Appearance do
+  permit_params :title_id, :participant_id, :role
 
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # Uncomment all parameters which should be permitted for assignment
-  #
-  # permit_params :title_id, :participant_id, :role
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:title_id, :participant_id, :role]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
-  
+  filter :title_title, as: :string
+  filter :participant_full_name, as: :string
+  filter :role, as: :select
+  filter :create_at
+  filter :updated_at
 end
