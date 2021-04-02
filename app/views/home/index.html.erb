@@ -1,5 +1,8 @@
 <div class="container">
   <h1>Rails Movies Search Application</h1>
   <p>Choose from the links below to try different types of search</p>
-  <%= link_to "In-Memory Search", in_memory_search_index_path %>
+  <ul>
+    <li><%= link_to "In-Memory Search", in_memory_search_index_path %></li>
+    <li><%= link_to "Pg Simple Search", pg_simple_search_index_path %></li>
+    <li><%= link_to "Pg FTS Search", pg_fts_search_index_path %></li>
 </div>
