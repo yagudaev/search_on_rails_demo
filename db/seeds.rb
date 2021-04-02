@@ -116,6 +116,7 @@ def serialize_participant(actor_full_name)
     full_name: actor_full_name,
     first_name: first_name,
     last_name: last_name,
+    actor: true,
     **dates
   }
 end
