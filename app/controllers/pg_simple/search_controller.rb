@@ -2,10 +2,26 @@ module PgSimple
   class SearchController < ApplicationController
     ALLOWED_FILTERS = %w[type rating release_year duration country].freeze
 
+    class TitleSearch < FortyFacets::FacetSearch
+      # facet :type
+      model 'Title'
+
+      # facet [:participant, :full_name], name: 'Actor'
+      facet :year, order: :year
+      facet :color
+      facet :score
+      facet :rating
+    end
+
     def index
       @collection = Title.all
 
       @filters = filter_params.dig(:filters)&.to_h
+
+      # TODO
+      @search = TitleSearch.new(params)
+      # pagination tied to will_paginate
+      @forty_facets_titles = @search.result
 
       query = params[:q] || ''
       search_options = {
@@ -18,7 +34,19 @@ module PgSimple
       }
 
       @results = Title.search(query, search_options)
-      @facets = [] #Title.facets(@collection, query, search_options)
+
+      filter = @search.filter(:year)
+      @facets = [{
+        label: filter.name.titleize,
+        items: filter.facet.map do |facet_value|
+          {
+            field: filter.name,
+            label: facet_value.entity,
+            count: facet_value.count,
+            value: facet_value.entity
+          }
+        end
+      }]
       @sort_by = sort_by
       @sort_options = [['Relevance', '_score_desc'], ['Title A-Z', 'title_asc'], ['Title Z-A', 'title_desc'], ['Other', 'other']]
 
