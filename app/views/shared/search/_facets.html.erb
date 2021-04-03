@@ -6,7 +6,7 @@
         <li>
           <label>
             <%= check_box 'filters', facet[:field], { multiple: true, class: 'rounded-sm py-1 border-indigo-200', onchange: 'this.form.submit()' }, item[:value], nil %>
-            <span class="ml-2"><%= item[:label] %><span class="text-gray-400 ml-1 font-light">(<%= item[:count] %>)</span>
+            <span class="ml-2"><%= item[:label] %><span class="text-gray-400 ml-1 font-light">(<%= number_with_delimiter(item[:count]) %>)</span>
           </label>
         </li>
       <% end %>
