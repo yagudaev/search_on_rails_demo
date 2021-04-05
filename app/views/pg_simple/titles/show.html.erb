@@ -1,7 +1,7 @@
 <div class="container">
   <h1 class="block"><%= @title[:title] %></h1>
   <ul class="block">
-    <% @title.each do |key, value| %>
+    <% @title.attributes.each do |key, value| %>
       <li class="block mt-1">
         <span class="font-bold"><%= key.titleize %>:</span>
         <span><%= value%></span>
