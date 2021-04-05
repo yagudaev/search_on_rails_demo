@@ -23,6 +23,12 @@ RSpec.shared_examples Search::InMemory::Matcher do
         it { is_expected.to match_array([record]) }
       end
 
+      context 'and there is a lower case match' do
+        let(:query) { 'the matrix' }
+
+        it { is_expected.to match_array([record]) }
+      end
+
       context 'and there is no match' do
         let(:query) { 'Titanic' }
 
