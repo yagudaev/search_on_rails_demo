@@ -1,5 +1,5 @@
 class Title < ApplicationRecord
-  def self.search(query, _search_options)
+  scope :search, ->(query, _search_options) do
     return self if query.blank?
 
     where("title iLIKE ?", "%#{query}%")

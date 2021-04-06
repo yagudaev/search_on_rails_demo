@@ -1,6 +1,6 @@
 module PgSimple
   class SearchController < ApplicationController
-    ALLOWED_FILTERS = %w[type rating release_year duration country].freeze
+    ALLOWED_FILTERS = %w[type rating year duration country].freeze
 
     class TitleSearch < FortyFacets::FacetSearch
       # facet :type
@@ -16,12 +16,13 @@ module PgSimple
     def index
       @collection = Title.all
 
-      @filters = filter_params.dig(:filters)&.to_h
+      @filters = filter_params[:filters]&.to_h
 
       # TODO
-      @search = TitleSearch.new(params)
+      search_params = { "search" => @filters }
+      @search = TitleSearch.new(search_params)
       # pagination tied to will_paginate
-      @forty_facets_titles = @search.result
+      @forty_facets_results = @search.result
 
       query = params[:q] || ''
       search_options = {
@@ -33,14 +34,14 @@ module PgSimple
         # highlight: true
       }
 
-      @results = Title.search(query, search_options)
+      @results = @forty_facets_results.search(query, search_options)
 
       filter = @search.filter(:year)
       @facets = [{
         label: filter.name.titleize,
+        field: filter.name,
         items: filter.facet.map do |facet_value|
           {
-            field: filter.name,
             label: facet_value.entity,
             count: facet_value.count,
             value: facet_value.entity
