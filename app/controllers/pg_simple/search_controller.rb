@@ -18,12 +18,6 @@ module PgSimple
 
       @filters = filter_params[:filters]&.to_h
 
-      # TODO
-      search_params = { "search" => @filters }
-      @search = TitleSearch.new(search_params)
-      # pagination tied to will_paginate
-      @forty_facets_results = @search.result
-
       query = params[:q] || ''
       search_options = {
         # sort: params[:sort],
@@ -33,8 +27,13 @@ module PgSimple
         # facets: ALLOWED_FILTERS,
         # highlight: true
       }
+      @results = Title.search(query, search_options)
 
-      @results = @forty_facets_results.search(query, search_options)
+      # forty facets
+      search_params = { "search" => @filters }
+      @search = TitleSearch.new(search_params)
+      @search.change_root(@results)
+      @results = @search.result
 
       filter = @search.filter(:year)
       @facets = [{
