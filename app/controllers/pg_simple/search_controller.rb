@@ -13,11 +13,6 @@ module PgSimple
       facet :color
       facet :score
       facet :rating
-
-      # order :id_desc
-      # order :id_asc
-      orders "title_asc" => { title: :asc },
-             "title_desc" => { title: :desc }
     end
 
     def index
@@ -37,10 +32,11 @@ module PgSimple
       @results = Title.search(query, search_options)
 
       # forty facets
-      search_params = { search: @filters, order: sort_by_forty }
+      search_params = { search: @filters }.with_indifferent_access
       @search = TitleSearch.new(search_params)
       @search.change_root(@results)
-      @results = @search.result.order(sort_by_ar)
+      @results = @search.result
+      @results = @results.order(sort_by_ar) if sort_by_ar
 
       @facets = map_facets([:type, :rating, :year, :color, :score])
       @sort_by = sort_by
@@ -106,9 +102,9 @@ module PgSimple
     end
 
     def sort_by
-      case permitted_params.dig(:sort, :field)
+      case params.dig(:sort, :field)
       when 'title'
-        "title_#{permitted_params.dig(:sort, :direction)}"
+        "title_#{params.dig(:sort, :direction)}"
       when '_score'
         '_score_desc'
       else
@@ -117,7 +113,12 @@ module PgSimple
     end
 
     def sort_by_ar
-      { permitted_params.dig(:sort, :field) => permitted_params.dig(:sort, :direction) }
+      field = params.dig(:sort, :field)
+      direction = params.dig(:sort, :direction)
+
+      return nil if !field || !direction
+
+      { field => direction }
     end
 
     def sort_by_forty
