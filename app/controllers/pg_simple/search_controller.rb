@@ -1,6 +1,6 @@
 module PgSimple
   class SearchController < ApplicationController
-    ALLOWED_FILTERS = %w[type rating year duration country].freeze
+    ALLOWED_FILTERS = %w[type rating year color].freeze
     SORTABLE = Title.column_names
 
     class TitleSearch < FortyFacets::FacetSearch
@@ -10,9 +10,9 @@ module PgSimple
       # facet [:participant, :full_name], name: 'Actor'
       facet :type
       facet :year
-      facet :color
-      facet :score
-      facet :rating
+      facet :color, order: ->(label) { nil }
+      facet :score, order: ->(label) { nil }
+      facet :rating, order: ->(label) { -label }
     end
 
     def index
@@ -29,20 +29,22 @@ module PgSimple
         # facets: ALLOWED_FILTERS,
         # highlight: true
       }
-      @results = Title.search(query, search_options)
+      @results = Title.search(query, search_options).limit(10)
 
       # forty facets
       search_params = { search: @filters }.with_indifferent_access
       @search = TitleSearch.new(search_params)
       @search.change_root(@results)
-      @results = @search.result
+      @results = @search.result(skip_ordering: true)
       @results = @results.order(sort_by_ar) if sort_by_ar
 
-      @facets = map_facets([:type, :rating, :year, :color, :score])
+      # @facets = map_facets([:type, :rating, :year, :color, :score])
+      @facets = map_facets([:type, :rating, :year, :color])
       @sort_by = sort_by
       @sort_options = [['Relevance', '_score_desc'], ['Title A-Z', 'title_asc'], ['Title Z-A', 'title_desc'], ['Other', 'other']]
 
       @filters = OpenStruct.new @filters
+      @results = @results.limit(nil)
 
       track_search
 
@@ -68,7 +70,7 @@ module PgSimple
     end
 
     def serialize_facet_items(filter)
-      filter.facet.map do |facet_value|
+      filter.facet.first(10).map do |facet_value|
         {
           label: facet_value.entity,
           count: facet_value.count,
