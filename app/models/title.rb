@@ -1,7 +1,12 @@
 class Title < ApplicationRecord
-  scope :search, ->(query, _search_options) do
+  scope :search, ->(query, search_options) do
     return self if query.blank?
 
-    where("title iLIKE ?", "%#{query}%")
+    scope = where("title iLIKE ?", "%#{query}%")
+    if search_options[:sort]
+      scope = scope.order(search_options.dig(:sort, "field") => search_options.dig(:sort, "direction"))
+    end
+
+    scope
   end
 end

@@ -1,16 +1,23 @@
 module PgSimple
   class SearchController < ApplicationController
     ALLOWED_FILTERS = %w[type rating year duration country].freeze
+    SORTABLE = Title.column_names
 
     class TitleSearch < FortyFacets::FacetSearch
       # facet :type
       model 'Title'
 
       # facet [:participant, :full_name], name: 'Actor'
-      facet :year, order: :year
+      facet :type
+      facet :year
       facet :color
       facet :score
       facet :rating
+
+      # order :id_desc
+      # order :id_asc
+      orders "title_asc" => { title: :asc },
+             "title_desc" => { title: :desc }
     end
 
     def index
@@ -20,7 +27,7 @@ module PgSimple
 
       query = params[:q] || ''
       search_options = {
-        # sort: params[:sort],
+        sort: params[:sort],
         # filters: @filters,
         # weights: [:title, :director, :cast],
         # with_score: true,
@@ -30,23 +37,12 @@ module PgSimple
       @results = Title.search(query, search_options)
 
       # forty facets
-      search_params = { "search" => @filters }
+      search_params = { search: @filters, order: sort_by_forty }
       @search = TitleSearch.new(search_params)
       @search.change_root(@results)
-      @results = @search.result
+      @results = @search.result.order(sort_by_ar)
 
-      filter = @search.filter(:year)
-      @facets = [{
-        label: filter.name.titleize,
-        field: filter.name,
-        items: filter.facet.map do |facet_value|
-          {
-            label: facet_value.entity,
-            count: facet_value.count,
-            value: facet_value.entity
-          }
-        end
-      }]
+      @facets = map_facets([:type, :rating, :year, :color, :score])
       @sort_by = sort_by
       @sort_options = [['Relevance', '_score_desc'], ['Title A-Z', 'title_asc'], ['Title Z-A', 'title_desc'], ['Other', 'other']]
 
@@ -55,6 +51,34 @@ module PgSimple
       track_search
 
       @pagy, @results_page = pagy(@results, items: 30)
+    end
+
+    private
+
+    def map_facets(fields)
+      fields.map do |field|
+        filter = @search.filter(field)
+
+        serialize_facet(filter)
+      end
+    end
+
+    def serialize_facet(filter)
+      {
+        label: filter.name.titleize,
+        field: filter.name,
+        items: serialize_facet_items(filter)
+      }
+    end
+
+    def serialize_facet_items(filter)
+      filter.facet.map do |facet_value|
+        {
+          label: facet_value.entity,
+          count: facet_value.count,
+          value: facet_value.entity
+        }
+      end
     end
 
     def permitted_params
@@ -82,9 +106,25 @@ module PgSimple
     end
 
     def sort_by
-      case params.dig(:sort, :field)
+      case permitted_params.dig(:sort, :field)
       when 'title'
-        "title_#{params.dig(:sort, :direction)}"
+        "title_#{permitted_params.dig(:sort, :direction)}"
+      when '_score'
+        '_score_desc'
+      else
+        'other'
+      end
+    end
+
+    def sort_by_ar
+      { permitted_params.dig(:sort, :field) => permitted_params.dig(:sort, :direction) }
+    end
+
+    def sort_by_forty
+      field = params.dig(:sort, :field)
+      case field
+      when *SORTABLE
+        "#{field}_#{params.dig(:sort, :direction)}"
       when '_score'
         '_score_desc'
       else
