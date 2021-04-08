@@ -1,17 +1,17 @@
 module PgSimple
   class SearchController < ApplicationController
-    ALLOWED_FILTERS = %w[type rating year color actor].freeze
+    ALLOWED_FILTERS = %w[type rating year color actors-full_name].freeze
     SORTABLE = Title.column_names
 
+    # TODO: think about hiding this in the model
     class TitleSearch < FortyFacets::FacetSearch
-      # facet :type
       model 'Title'
 
-      facet [:actors, :full_name], name: "actor"
+      facet [:actors, :full_name], name: "actors-full_name"
       facet :type
       facet :year
       facet :color
-      facet :score, order: ->(label) { nil }
+      facet :score
       facet :rating, order: ->(label) { -label }
     end
 
@@ -34,11 +34,11 @@ module PgSimple
       # forty facets
       search_params = { search: @filters }.with_indifferent_access
       @search = TitleSearch.new(search_params)
+
       @search.change_root(@results)
       @results = @search.result(skip_ordering: true)
       @results = @results.order(sort_by_ar) if sort_by_ar
 
-      # @facets = map_facets([:type, :rating, :year, :color, :score])
       @facets = map_facets([[:actors, :full_name], :type, :rating, :year, :color])
       @sort_by = sort_by
       @sort_options = [['Relevance', '_score_desc'], ['Title A-Z', 'title_asc'], ['Title Z-A', 'title_desc'], ['Other', 'other']]
