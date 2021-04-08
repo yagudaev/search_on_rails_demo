@@ -1,4 +1,9 @@
 class Title < ApplicationRecord
+  has_many :appearances
+  has_many :actor_appearances, -> { acting }, class_name: 'Appearance'
+  has_many :participants, through: :appearances
+  has_many :actors, through: :actor_appearances, class_name: 'Participant', source: :participant
+
   scope :search, ->(query, search_options) do
     return self if query.blank?
 
