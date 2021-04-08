@@ -22,14 +22,9 @@ module PgSimple
 
       query = params[:q] || ''
       search_options = {
-        sort: params[:sort],
-        # filters: @filters,
-        # weights: [:title, :director, :cast],
-        # with_score: true,
-        # facets: ALLOWED_FILTERS,
-        # highlight: true
+        sort: params[:sort]
       }
-      @results = Title.search(query, search_options).limit(10)
+      @results = Title.search(query, search_options)
 
       # forty facets
       search_params = { search: @filters }.with_indifferent_access
@@ -92,7 +87,7 @@ module PgSimple
       Searchjoy::Search.create(
         search_type: "Title",
         query: params[:q],
-        results_count: @results.count,
+        results_count: @results.dup.reselect("titles.*").count,
         user_id: 1
       )
     end
