@@ -32,9 +32,11 @@ module PgSimple
     end
 
     def track_search
+      filters = ""
+      filters = "_filters_:#{@filters.to_json}" if @filters&.present?
       Searchjoy::Search.create(
         search_type: "Title",
-        query: params[:q],
+        query: "#{params[:q]}#{filters}",
         results_count: @results.dup.reselect("titles.*").count,
         user_id: 1
       )
