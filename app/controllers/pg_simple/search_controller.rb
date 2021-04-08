@@ -38,7 +38,7 @@ module PgSimple
         search_type: "Title",
         query: "#{params[:q]}#{filters}",
         results_count: @results.dup.reselect("titles.*").count,
-        user_id: 1
+        user_id: nil
       )
     end
 
