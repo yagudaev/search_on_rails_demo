@@ -2,36 +2,15 @@ module PgSimple
   class SearchController < ApplicationController
     ALLOWED_FILTERS = %w[type rating year color actors-full_name].freeze
 
-    # TODO: think about hiding this in the model
-    class TitleSearch < FortyFacets::FacetSearch
-      model 'Title'
-
-      facet [:actors, :full_name], name: "actors-full_name"
-      facet :type
-      facet :year
-      facet :color
-      facet :score
-      facet :rating, order: ->(label) { -label }
-    end
-
     def index
       @collection = Title.all
 
       @filters = filter_params[:filters]&.to_h
 
       query = params[:q] || ''
-      search_options = {
-        sort: params[:sort]
-      }
-      @results = Title.search(query, search_options)
-
-      # forty facets
-      search_params = { search: @filters }.with_indifferent_access
-      @search = TitleSearch.new(search_params)
-      @search.change_root(@results)
-      @results = @search.result(skip_ordering: true)
-      @results = @results.order(sort_by_ar) if sort_by_ar
-      @facets = map_facets([[:actors, :full_name], :type, :rating, :year, :color])
+      @results = Title.search(query)
+      @results, @facets = @results.facets(@filters)
+      @results = @results.sort_by_param(permitted_params[:sort].to_h)
 
       @sort_by = sort_by
       @sort_options = [['Relevance', '_score_desc'], ['Title A-Z', 'title_asc'], ['Title Z-A', 'title_desc'], ['Other', 'other']]
@@ -44,32 +23,6 @@ module PgSimple
     end
 
     private
-
-    def map_facets(fields)
-      fields.map do |field|
-        filter = @search.filter(field)
-
-        serialize_facet(filter)
-      end
-    end
-
-    def serialize_facet(filter)
-      {
-        label: filter.name.titleize,
-        field: filter.name,
-        items: serialize_facet_items(filter)
-      }
-    end
-
-    def serialize_facet_items(filter)
-      filter.facet.first(10).map do |facet_value|
-        {
-          label: facet_value.entity,
-          count: facet_value.count,
-          value: facet_value.entity
-        }
-      end
-    end
 
     def permitted_params
       params.permit(:q, sort: [:field, :direction]).merge(filter_params)
@@ -104,15 +57,6 @@ module PgSimple
       else
         'other'
       end
-    end
-
-    def sort_by_ar
-      field = params.dig(:sort, :field)
-      direction = params.dig(:sort, :direction)
-
-      return nil if !field || !direction
-
-      { field => direction }
     end
   end
 end
