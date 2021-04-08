@@ -4,7 +4,7 @@
       <%= render 'shared/search/facets', facets: @facets, f: f %>
     </aside>
     <main class="w-9/12 lg:w-10/12">
-      <h1 class="">Simple In-Memory Search</h1>
+      <h1 class="">Simple PG Search</h1>
       <%= f.text_field :q, placeholder: 'search', value: params[:q], class: 'rounded-md py-1 border-indigo-200' %>
       <%= f.button :submit, class: 'border border-indigo-500 bg-indigo-500 text-white rounded-md px-2 py-1 m-2 transition duration-200 ease select-none hover:bg-indigo-600 focus:outline-none focus:shadow-outline' do %>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" height="18" style="margin-top: -4px;" viewBox="0 0 24 24" stroke="currentColor" class="inline">
@@ -19,7 +19,7 @@
       <table class="table-auto mt-4 results">
         <thead class="border-b-2">
           <tr class="mt-2 mb-1">
-            <% @results_page.first&.keys&.each do |key| %>
+            <% @results_page.first&.attributes&.keys&.each do |key| %>
               <th class="px-2 pb-0 text-left font-medium text-gray-900 <%= key %>">
                 <%= render 'shared/table/sortable_header', key: key %>
               </th>
@@ -30,9 +30,9 @@
         <tbody>
           <% @results_page.each_with_index do |result, i| %>
             <tr class="">
-              <% result.values.each do |value| %>
+              <% result.attributes.values.each do |value| %>
                 <td>
-                  <%= link_to in_memory_title_path(result["show_id"], q: params[:q]), class: 'text-gray-700 font-normal' do %>
+                  <%= link_to pg_simple_title_path(result.id, q: params[:q]), class: 'text-gray-700 font-normal' do %>
                     <%= value&.to_s&.html_safe %>
                   <% end %>
                 </td>

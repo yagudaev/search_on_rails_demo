@@ -1,24 +1,15 @@
-module InMemory
+module PgSimple
   class SearchController < ApplicationController
-    ALLOWED_FILTERS = %w[type rating release_year duration country].freeze
+    ALLOWED_FILTERS = %w[type rating year color actors-full_name].freeze
 
     def index
-      @collection = InMemory::Title.import
-
-      @filters = filter_params.dig(:filters)&.to_h
+      @filters = filter_params[:filters]&.to_h
 
       query = params[:q] || ''
-      search_options = {
-        sort: params[:sort],
-        filters: @filters,
-        weights: [:title, :director, :cast],
-        with_score: true,
-        facets: ALLOWED_FILTERS,
-        highlight: true
-      }
+      @results = Title.search(query)
+      @results, @facets = @results.facets(@filters)
+      @results = @results.sort_by_param(permitted_params[:sort].to_h)
 
-      @results = Title.search(query, search_options)
-      @facets = Title.facets(@collection, query, search_options)
       @sort_by = sort_by
       @sort_options = [['Relevance', '_score_desc'], ['Title A-Z', 'title_asc'], ['Title Z-A', 'title_desc'], ['Other', 'other']]
 
@@ -26,8 +17,10 @@ module InMemory
 
       track_search
 
-      @pagy, @results_page = pagy_array(@results, items: 30)
+      @pagy, @results_page = pagy(@results, items: 30)
     end
+
+    private
 
     def permitted_params
       params.permit(:q, sort: [:field, :direction]).merge(filter_params)
@@ -44,7 +37,7 @@ module InMemory
       Searchjoy::Search.create(
         search_type: "Title",
         query: "#{params[:q]}#{filters}",
-        results_count: @results.count,
+        results_count: @results.dup.reselect("titles.*").count,
         user_id: nil
       )
     end

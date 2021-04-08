@@ -12,6 +12,11 @@
   </head>
 
   <body>
+    <header>
+      <%= link_to '/' do %>
+        <%= image_tag 'logo.png', style: "height: 50px" %>
+      <% end %>
+    </header>
     <%= yield %>
   </body>
 </html>

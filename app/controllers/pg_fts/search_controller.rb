@@ -1,4 +1,4 @@
-module InMemory
+module PgFts
   class SearchController < ApplicationController
     ALLOWED_FILTERS = %w[type rating release_year duration country].freeze
 
@@ -39,13 +39,11 @@ module InMemory
     end
 
     def track_search
-      filters = ""
-      filters = "_filters_:#{@filters.to_json}" if @filters&.present?
       Searchjoy::Search.create(
         search_type: "Title",
-        query: "#{params[:q]}#{filters}",
+        query: params[:q],
         results_count: @results.count,
-        user_id: nil
+        user_id: 1
       )
     end
 

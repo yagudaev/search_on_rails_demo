@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_31_033054) do
+ActiveRecord::Schema.define(version: 2021_04_07_162545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,10 @@ ActiveRecord::Schema.define(version: 2021_03_31_033054) do
     t.string "last_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "actor", default: false, null: false
+    t.boolean "director", default: false, null: false
+    t.index ["actor"], name: "index_participants_on_actor"
+    t.index ["director"], name: "index_participants_on_director"
     t.index ["first_name"], name: "index_participants_on_first_name"
     t.index ["full_name"], name: "index_participants_on_full_name", unique: true
     t.index ["last_name"], name: "index_participants_on_last_name"
@@ -91,6 +95,8 @@ ActiveRecord::Schema.define(version: 2021_03_31_033054) do
     t.integer "rating"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["color"], name: "index_titles_on_color"
+    t.index ["score"], name: "index_titles_on_score"
     t.index ["title"], name: "index_titles_on_title"
     t.index ["type"], name: "index_titles_on_type"
     t.index ["year"], name: "index_titles_on_year"
