@@ -122,17 +122,5 @@ module PgSimple
 
       { field => direction }
     end
-
-    def sort_by_forty
-      field = params.dig(:sort, :field)
-      case field
-      when *SORTABLE
-        "#{field}_#{params.dig(:sort, :direction)}"
-      when '_score'
-        '_score_desc'
-      else
-        'other'
-      end
-    end
   end
 end
