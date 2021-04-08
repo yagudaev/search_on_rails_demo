@@ -41,8 +41,7 @@ class Title < ApplicationRecord
       search_params = { search: filters }.with_indifferent_access
       search = Faceter.new(search_params)
       search.change_root(results)
-      results = search.result(skip_ordering: true)
-      # results = @results.order(sort_by_ar) if sort_by_ar
+      results = search.result
 
       facets = map_facets(search, [[:actors, :full_name], :type, :rating, :year, :color])
 

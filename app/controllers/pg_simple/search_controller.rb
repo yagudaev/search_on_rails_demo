@@ -3,8 +3,6 @@ module PgSimple
     ALLOWED_FILTERS = %w[type rating year color actors-full_name].freeze
 
     def index
-      @collection = Title.all
-
       @filters = filter_params[:filters]&.to_h
 
       query = params[:q] || ''
