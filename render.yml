@@ -1,0 +1,18 @@
+databases:
+ - name: search-on-rails-demo
+   databaseName: search-on-rails-demo
+   user: search-on-rails-demo
+
+services:
+ - type: web
+   name: search-on-rails-demo
+   env: ruby
+   buildCommand: "./bin/render-build.sh"
+   startCommand: "bundle exec puma -C config/puma.rb"
+   envVars:
+     - key: DATABASE_URL
+       fromDatabase:
+         name: search-on-rails-demo
+         property: connectionString
+     - key: SECRET_KEY_BASE
+       sync: false

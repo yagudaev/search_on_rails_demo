@@ -81,6 +81,4 @@ test:
 #
 production:
   <<: *default
-  database: rails_search_movies_production
-  username: rails_search_movies
-  password: <%= ENV['RAILS_SEARCH_MOVIES_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
