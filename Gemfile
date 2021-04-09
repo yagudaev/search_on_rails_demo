@@ -6,7 +6,7 @@ ruby '3.0.1'
 # Core Rails
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'jbuilder', '~> 2.7'
-gem 'pg', '~> 1.1'
+gem 'pg', '~> 1.2.3'
 gem 'puma', '~> 5.0'
 gem 'rails', '~> 6.1.1'
 gem 'sass-rails', '>= 6'
@@ -36,8 +36,10 @@ group :development do
 end
 
 group :production do
+  # montoring
   gem 'newrelic_rpm'
   gem 'newrelic-infinite_tracing'
+  gem 'skylight'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
