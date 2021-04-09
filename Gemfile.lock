@@ -251,6 +251,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stackprof (0.2.16)
     thor (1.1.0)
     tilt (2.0.10)
     turbolinks (5.2.1)
@@ -299,6 +300,7 @@ DEPENDENCIES
   searchjoy
   skylight
   spring
+  stackprof
   turbolinks (~> 5)
   tzinfo-data
   web-console (>= 4.1.0)
