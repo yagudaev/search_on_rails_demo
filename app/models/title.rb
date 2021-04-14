@@ -26,12 +26,12 @@ class Title < ApplicationRecord
   class Faceter < FortyFacets::FacetSearch
     model 'Title'
 
-    facet [:actors, :full_name], name: "actors-full_name"
-    facet :type
-    facet :year
-    facet :color
-    facet :score
-    facet :rating, order: ->(label) { -label }
+    facet [:actors, :full_name], name: "actors-full_name", top: 10
+    facet :type, top: 10, skip_distinct: true, skip_ordering: true
+    facet :year, top: 10, skip_distinct: true, skip_ordering: true
+    facet :color, top: 10, skip_distinct: true, skip_ordering: true
+    facet :score, top: 10, skip_distinct: true, skip_ordering: true
+    facet :rating, order: ->(label) { -label }, skip_distinct: true, skip_ordering: true
   end
 
   class << self
