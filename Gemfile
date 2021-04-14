@@ -19,7 +19,7 @@ gem 'webpacker', '~> 5.0'
 # Data exploration
 gem 'activeadmin'
 gem 'devise', '~> 4.7'
-gem 'forty_facets'
+gem 'forty_facets', github: 'yagudaev/forty_facets', branch: 'optimize-facets-speed'
 gem 'pagy'
 gem 'searchjoy'
 
