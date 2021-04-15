@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%#= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
   <body>
+    <span id="github-banner"><a href="https://github.com/yagudaev/search_on_rails">View on GitHub</a></span>
     <header>
       <%= link_to '/' do %>
         <%= image_tag 'logo.png', style: "height: 50px" %>
