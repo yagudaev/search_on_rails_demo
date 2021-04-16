@@ -23,9 +23,10 @@ window.handleSortChange = (event) => {
   const field = match[1]
   const direction = match[2]
   const params = new URLSearchParams(window.location.search)
-  const query = params.get("q")
+  params.set('sort[field]', field)
+  params.set('sort[direction]', direction)
 
-  const location = `${window.location.path}?q=${query}&sort[field]=${field}&sort[direction]=${direction}`
+  const location = `${window.location.pathname}?${params.toString()}`
   Turbolinks.visit(location)
 }
 
@@ -46,8 +47,8 @@ function makeGetFormsSubmitWithTurbolinks() {
         if (actionUrl.pathname === currentUrl.pathname && currentUrl.searchParams.has("per")) {
           actionUrl.searchParams.set("per", currentUrl.searchParams.get("per"))
         }
-        entries.forEach((entry) => actionUrl.searchParams.set(...entry))
-        (actionUrl.toString())
+        entries.forEach((entry) => actionUrl.searchParams.append(...entry))
+        Turbolinks.visit(actionUrl.toString())
       })
     }
   })
