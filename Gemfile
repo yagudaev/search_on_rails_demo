@@ -21,6 +21,7 @@ gem 'activeadmin'
 gem 'devise', '~> 4.7'
 gem 'forty_facets', github: 'yagudaev/forty_facets', branch: 'optimize-facets-speed'
 gem 'pagy'
+gem 'ransack'
 gem 'searchjoy'
 
 group :development, :test do
