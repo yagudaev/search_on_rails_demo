@@ -17,14 +17,43 @@ window.handleSortChange = (event) => {
   const target = event.target
   const sort = target.value
 
-  if (['other'].includes(sort)) return
+  if (["other"].includes(sort)) return
 
   const match = sort.match(/(.+)_(desc|asc)$/)
   const field = match[1]
   const direction = match[2]
   const params = new URLSearchParams(window.location.search)
-  const query = params.get('q')
+  const query = params.get("q")
 
   const location = `q=${query}&sort[field]=${field}&sort[direction]=${direction}`
   window.location.search = location
 }
+
+window.handleFormSubmit = (target) => {
+  target.form.requestSubmit()
+}
+
+function makeGetFormsSubmitWithTurbolinks() {
+  // Source:
+  document.addEventListener("turbolinks:load", function (event) {
+    for (let form of document.querySelectorAll("form[method=get]:not([data-remote=true])")) {
+      form.addEventListener("submit", function (event) {
+        event.preventDefault()
+        const entries = [...new FormData(event.target).entries()]
+        const actionUrl = new URL(event.target.action)
+        const currentUrl = new URL(location.href)
+        // if pathname not changed, hand over per parameter to next page.
+        if (
+          actionUrl.pathname === currentUrl.pathname &&
+          currentUrl.searchParams.has("per")
+        ) {
+          actionUrl.searchParams.set("per", currentUrl.searchParams.get("per"))
+        }
+        entries.forEach((entry) => actionUrl.searchParams.set(...entry))
+        Turbolinks.visit(actionUrl.toString())
+      })
+    }
+  })
+}
+
+makeGetFormsSubmitWithTurbolinks()
