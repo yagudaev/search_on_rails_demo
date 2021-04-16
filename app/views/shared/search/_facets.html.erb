@@ -5,7 +5,7 @@
       <% facet[:items].sort_by { |item| -item[:count] }.first(10).each do |item| %>
         <li>
           <label>
-            <%= check_box 'filters', facet[:field], { multiple: true, class: 'rounded-sm py-1 border-indigo-200', onchange: 'this.form.submit()' }, item[:value]&.to_s, nil %>
+            <%= check_box 'filters', facet[:field], { multiple: true, class: 'rounded-sm py-1 border-indigo-200', onchange: 'handleFormSubmit(this)' }, item[:value]&.to_s, nil %>
             <span class="ml-2"><%= item[:label] %><span class="text-gray-400 ml-1 font-light">(<%= number_with_delimiter(item[:count]) %>)</span>
           </label>
         </li>
