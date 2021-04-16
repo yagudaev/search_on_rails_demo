@@ -34,7 +34,7 @@ window.handleFormSubmit = (target) => {
 }
 
 function makeGetFormsSubmitWithTurbolinks() {
-  // Source:
+  // Source: https://github.com/turbolinks/turbolinks/issues/272#issuecomment-615038967
   document.addEventListener("turbolinks:load", function (event) {
     for (let form of document.querySelectorAll("form[method=get]:not([data-remote=true])")) {
       form.addEventListener("submit", function (event) {
@@ -43,10 +43,7 @@ function makeGetFormsSubmitWithTurbolinks() {
         const actionUrl = new URL(event.target.action)
         const currentUrl = new URL(location.href)
         // if pathname not changed, hand over per parameter to next page.
-        if (
-          actionUrl.pathname === currentUrl.pathname &&
-          currentUrl.searchParams.has("per")
-        ) {
+        if (actionUrl.pathname === currentUrl.pathname && currentUrl.searchParams.has("per")) {
           actionUrl.searchParams.set("per", currentUrl.searchParams.get("per"))
         }
         entries.forEach((entry) => actionUrl.searchParams.set(...entry))
