@@ -23,8 +23,8 @@ window.handleSortChange = (event) => {
   const field = match[1]
   const direction = match[2]
   const params = new URLSearchParams(window.location.search)
-  params.set('sort[field]', field)
-  params.set('sort[direction]', direction)
+  params.set("sort[field]", field)
+  params.set("sort[direction]", direction)
 
   const location = `${window.location.pathname}?${params.toString()}`
   Turbolinks.visit(location)
@@ -32,6 +32,31 @@ window.handleSortChange = (event) => {
 
 window.handleFormSubmit = (target) => {
   target.form.requestSubmit()
+}
+
+window.handleFacetSearch = async (target, field) => {
+  const searchQuery = target.value
+  console.log("searching", searchQuery, field)
+
+  const results = await fetchFacetsFor(field, searchQuery)
+  const facetDOM = target.closest('[data-id="facet"]')
+  renderFacets(results, field, facetDOM)
+}
+
+async function fetchFacetsFor(field, searchQuery) {
+  return Promise.resolve([{ label: "Christopher Lee", value: "Christopher Lee", count: 188 }])
+}
+
+function renderFacets(results, field, facetDOM) {
+  const resultsDOM = facetDOM.querySelector('[data-id="results"')
+  const template = facetDOM.querySelector("template")
+  resultsDOM.innerHTML = results.map(({ label, count, value }) => {
+    return template.innerHTML
+      .replace("{{ label }}", label)
+      .replace("{{ count }}", count)
+      .replace("{{ field }}", field)
+      .replace("{{ value }}", value)
+  })
 }
 
 function makeGetFormsSubmitWithTurbolinks() {

@@ -1,7 +1,11 @@
-<div>
+<div data-id="facet">
   <% facets.each do |facet| %>
     <h2 class="mt-2 font-semibold"><%= facet[:label] %><h2>
-    <ul>
+    <% if facet[:searchable] %>
+      <input class="rounded-md py-1 border-indigo-200 mt-2 mb-2" placeholder="search <%= facet[:label]&.downcase %>..." type="text"
+        autocomplete="off" onKeydown="handleFacetSearch(this, '<%= j facet[:field] %>')" />
+    <% end %>
+    <ul data-id="results">
       <% facet[:items].sort_by { |item| -item[:count] }.first(10).each do |item| %>
         <li>
           <label>
@@ -11,5 +15,13 @@
         </li>
       <% end %>
     </ul>
+    <template>
+      <li>
+        <label>
+          <%= check_box 'filters', '{{ field }}', { multiple: true, class: 'rounded-sm py-1 border-indigo-200', onchange: 'handleFormSubmit(this)' }, '{{ value }}', nil %>
+          <span class="ml-2">{{ label }}<span class="text-gray-400 ml-1 font-light">({{ count }})</span>
+        </label>
+      <li>
+    </template>
   <% end %>
 </div>

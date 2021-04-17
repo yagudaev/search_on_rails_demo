@@ -26,7 +26,7 @@ class Title < ApplicationRecord
   class Faceter < FortyFacets::FacetSearch
     model 'Title'
 
-    facet [:actors, :full_name], name: "actors-full_name", top: 10
+    facet [:actors, :full_name], name: "actors-full_name", top: 10, searchable: true
     facet :type, top: 10, skip_distinct: true, skip_ordering: true
     facet :year, top: 10, skip_distinct: true, skip_ordering: true
     facet :color, top: 10, skip_distinct: true, skip_ordering: true
@@ -62,12 +62,13 @@ class Title < ApplicationRecord
       {
         label: filter.name.titleize,
         field: filter.name,
+        searchable: filter.definition.options[:searchable],
         items: serialize_facet_items(filter)
       }
     end
 
     def serialize_facet_items(filter)
-      filter.facet.first(10).map do |facet_value|
+      filter.facet.map do |facet_value|
         {
           label: facet_value.entity,
           count: facet_value.count,
