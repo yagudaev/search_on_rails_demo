@@ -9,7 +9,11 @@ Rails.application.routes.draw do
   end
 
   namespace :pg_simple do
-    resources :search, only: [:index]
+    resources :search, only: [:index] do
+      collection do
+        get :filter
+      end
+    end
     resources :titles, only: [:show]
   end
 

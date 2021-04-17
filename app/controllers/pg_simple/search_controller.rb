@@ -20,12 +20,24 @@ module PgSimple
       @pagy, @results_page = pagy(@results, items: 30)
     end
 
+    def filter
+      result = Title.ransack("#{params[:field].downcase}_start" => params[:query]&.downcase).result.limit(10)
+      render json: serialize_titles(result, params[:field])
+    end
+
     private
 
     def permitted_params
       params.permit(:q, sort: [:field, :direction]).merge(filter_params)
     end
     helper_method :permitted_params
+
+    def serialize_titles(titles, field)
+      # TODO: fix me so it doesn't say unkown, assocication + ransack
+      titles.map do |title|
+        { label: title[field] || 'Unknown', value: title[field] || 'Unknown', count: 0 }
+      end
+    end
 
     def filter_params
       params.permit(filters: allowed_filters_params)

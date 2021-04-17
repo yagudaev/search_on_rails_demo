@@ -44,7 +44,7 @@ window.handleFacetSearch = async (target, field) => {
 }
 
 async function fetchFacetsFor(field, searchQuery) {
-  return Promise.resolve([{ label: "Christopher Lee", value: "Christopher Lee", count: 188 }])
+  return fetch(`search/filter?field=${field}&q=${searchQuery}`).then((data) => data.json())
 }
 
 function renderFacets(results, field, facetDOM) {
@@ -56,7 +56,7 @@ function renderFacets(results, field, facetDOM) {
       .replace("{{ count }}", count)
       .replace("{{ field }}", field)
       .replace("{{ value }}", value)
-  })
+  }).join('\n')
 }
 
 function makeGetFormsSubmitWithTurbolinks() {
